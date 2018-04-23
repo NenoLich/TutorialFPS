@@ -18,7 +18,7 @@ namespace TutorialFPS.Controllers
 
             if (Input.GetButtonDown("Interact"))
             {
-                Main.Instance.DoorController.Open();
+                Main.Instance.InteractionController.Interact();
             }
         }
     }

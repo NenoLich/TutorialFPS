@@ -17,7 +17,6 @@ namespace TutorialFPS
         protected Rigidbody _rigidbody;
         protected string _name;
         protected bool _isVisible;
-        protected Camera _camera;
         #endregion
 
         #region Property
@@ -170,17 +169,6 @@ namespace TutorialFPS
 
                 if (_renderer!=null)
                     _renderer.enabled = _isVisible;
-            }
-        }
-
-        public Camera Camera
-        {
-            get
-            {
-                if (_camera != null)
-                    return _camera;
-
-                return _camera = Camera.main;
             }
         }
 

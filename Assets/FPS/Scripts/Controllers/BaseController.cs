@@ -8,19 +8,6 @@ namespace TutorialFPS.Controllers
     {
         public bool isEnabled { get; private set; }
 
-        private Camera _camera;
-
-        protected Camera Camera
-        {
-            get
-            {
-                if (_camera != null)
-                    return _camera;
-
-                return _camera = Camera.main;
-            }
-        }
-
         public virtual void On()
         {
             isEnabled = true;

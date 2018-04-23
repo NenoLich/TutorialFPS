@@ -12,7 +12,7 @@ namespace TutorialFPS
         public static GameObject Player { get; private set; }
         public InputController InputController { get; private set; }
         public FlashlightController FlashlightController { get; private set; }
-        public DoorController DoorController { get; private set; }
+        public InteractionController InteractionController { get; private set; }
 
         private void Awake()
         {
@@ -28,7 +28,7 @@ namespace TutorialFPS
         {
             InputController = gameObject.AddComponent<InputController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
-            DoorController = gameObject.AddComponent<DoorController>();
+            InteractionController = gameObject.AddComponent<InteractionController>();
         }
     }
 }
