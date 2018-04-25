@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Interfaces;
 using UnityEngine;
 
 namespace TutorialFPS.Models
@@ -10,6 +11,11 @@ namespace TutorialFPS.Models
 
         private Vector3 _forward;
         private Vector3 _defaultRotation;
+
+        public string InteractionText
+        {
+            get { return "Open"; }
+        }
 
         public Vector3 Forward
         {
@@ -40,8 +46,13 @@ namespace TutorialFPS.Models
         {
             yield return new WaitForFixedUpdate();
             bool condition = (Rotation.eulerAngles.y>270f? Rotation.eulerAngles.y-360f: Rotation.eulerAngles.y) < _defaultRotation.y;
-            while (condition == (Rotation.eulerAngles.y > 270f ? Rotation.eulerAngles.y - 360f : Rotation.eulerAngles.y) < _defaultRotation.y)
+
+            while (condition ==
+                   (Rotation.eulerAngles.y > 270f ? Rotation.eulerAngles.y - 360f : Rotation.eulerAngles.y) <
+                   _defaultRotation.y)
+            {
                 yield return new WaitForFixedUpdate();
+            }
 
             Rotation = Quaternion.Euler(_defaultRotation);
             Rigidbody.constraints = RigidbodyConstraints.FreezeRotationY;

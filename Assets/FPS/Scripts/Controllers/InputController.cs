@@ -20,6 +20,18 @@ namespace TutorialFPS.Controllers
             {
                 Main.Instance.InteractionController.Interact();
             }
+
+            if (Input.GetButton("Fire1"))
+            {
+                Main.Instance.WeaponController.Fire();
+
+            }
+
+            if (Input.GetButtonDown("ChangeWeapon"))
+            {
+                Main.Instance.WeaponController.ChangeWeapon();
+
+            }
         }
     }
 }

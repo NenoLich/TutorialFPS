@@ -23,11 +23,14 @@ namespace TutorialFPS.Views
 
         private void Update()
         {
-            _battery.value = _flashlightModel.batteryCharge;
-            if (_battery.value<10&&!_lowCharge)
+            if (Mathf.Abs(_battery.value - _flashlightModel.batteryCharge)>1)
             {
-                StartCoroutine(Warning());
-                _lowCharge = true;
+                _battery.value = _flashlightModel.batteryCharge;
+                if (_battery.value < 10 && !_lowCharge)
+                {
+                    StartCoroutine(Warning());
+                    _lowCharge = true;
+                }
             }
         }
 

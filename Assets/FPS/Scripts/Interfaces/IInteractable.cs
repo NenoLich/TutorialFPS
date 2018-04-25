@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TutorialFPS
+namespace TutorialFPS.Interfaces
 {
     public interface IInteractable
     {
+        string InteractionText { get; }
+
         void Interact();
     }
 }

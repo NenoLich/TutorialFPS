@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Interfaces;
+using TutorialFPS.Views;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,22 +9,17 @@ namespace TutorialFPS.Controllers
 {
     public class InteractionController : BaseController
     {
-        private GameObject TextPrefab;
+        private InteractionView _interactionView;
 
         [HideInInspector]
         public bool TextActive;
-
         public float Reach = 1.5F;
 
-        private GameObject textPrefabInstance;
-        private GameObject interactable;
+        private IInteractable _interactable;
 
         void Start()
         {
-            TextPrefab = Resources.Load("TextPrefab") as GameObject;
-
-            if (TextPrefab == null)
-                Debug.Log("<color=yellow><b>No TextPrefab was found.</b></color>");
+            _interactionView = FindObjectOfType<InteractionView>();
         }
 
         void FixedUpdate()
@@ -35,13 +32,12 @@ namespace TutorialFPS.Controllers
             {
                 if (hit.collider.tag == "Interactable")
                 {
-                    interactable = hit.collider.gameObject;
-
-                    if (TextActive == false && TextPrefab != null)
+                    if (TextActive == false && (object)_interactable == null)
                     {
-                        textPrefabInstance = Instantiate(TextPrefab);
+                        _interactable = hit.collider.gameObject.GetComponent<IInteractable>();
+
+                        _interactionView.ShowMessage(_interactable.InteractionText);
                         TextActive = true;
-                        textPrefabInstance.transform.SetParent(Main.Player.transform, true); 
                     }
                 }
 
@@ -55,26 +51,26 @@ namespace TutorialFPS.Controllers
             {
                 NothingDetected();
             }
-
+            
             Debug.DrawRay(ray.origin, ray.direction * Reach, Color.green);
         }
 
         private void NothingDetected()
         {
-            interactable = null;
-
+            _interactable = null;
+            
             if (TextActive)
             {
-                DestroyImmediate(textPrefabInstance);
+                _interactionView.HideMessage();
                 TextActive = false;
             }
         }
 
         public void Interact()
         {
-            if (interactable != null)
+            if (_interactable != null)
             {
-                interactable.GetComponent<IInteractable>().Interact();
+                _interactable.Interact();
             }
         }
     }

@@ -7,9 +7,10 @@ namespace TutorialFPS
     public abstract class BaseGameObject : MonoBehaviour
     {
         #region Fields
-        protected int _layer;
-        protected Color _color;
+        protected int _layer=-1;
+        protected Color _color=Color.clear;
         protected Renderer _renderer;
+        protected Transform _transform;
         protected Vector3 _position;
         protected Quaternion _rotation;
         protected Vector3 _scale;
@@ -37,7 +38,13 @@ namespace TutorialFPS
         /// </summary>
         public int Layers
         {
-            get { return _layer; }
+            get
+            {
+                if (_layer == -1 && (object)InstanceObject != null)
+                    _layer = InstanceObject.layer;
+
+                return _layer;
+            }
             set
             {
                 _layer = value;
@@ -46,16 +53,23 @@ namespace TutorialFPS
                 SetLayer(transform, value);
             }
         }
+
         /// <summary>
         /// Цвет материала объекта
         /// </summary>
         public Color Color
         {
-            get { return _color; }
+            get
+            {
+                if (_color == Color.clear&&(object)Renderer != null)
+                    _color = Renderer.material.color;
+
+                return _color;
+            }
             set
             {
                 _color = value;
-                if (_renderer == null) return;
+                if (Renderer == null) return;
 
                 SetColor(transform, _color);
             }
@@ -64,10 +78,21 @@ namespace TutorialFPS
         {
             get
             {
-                if (_renderer != null)
-                    return _renderer;
+                if ((object) _renderer == null && (object)InstanceObject != null)
+                    _renderer = GetComponent<Renderer>();
 
-                return _renderer = GetComponent<Renderer>();
+                return _renderer;
+            }
+        }
+
+        public Transform Transform
+        {
+            get
+            {
+                if ((object)_transform == null && (object)InstanceObject != null)
+                    _transform = GetComponent<Transform>();
+
+                return _transform;
             }
         }
         /// <summary>
@@ -77,18 +102,17 @@ namespace TutorialFPS
         {
             get
             {
-                if (InstanceObject != null)
-                {
-                    _position = transform.position;
-                }
+                if (_position == Vector3.zero && (object)InstanceObject != null)
+                    _position = Transform.position;
+
                 return _position;
             }
             set
             {
                 _position = value;
-                if (InstanceObject != null)
+                if ((object)InstanceObject != null)
                 {
-                    transform.position = _position;
+                    Transform.position = _position;
                 }
             }
         }
@@ -99,18 +123,17 @@ namespace TutorialFPS
         {
             get
             {
-                if (InstanceObject != null)
-                {
-                    _scale = transform.localScale;
-                }
+                if (_scale == Vector3.zero && (object)InstanceObject!=null)
+                    _scale = Transform.localScale;
+
                 return _scale;
             }
             set
             {
                 _scale = value;
-                if (InstanceObject != null)
+                if ((object)InstanceObject != null)
                 {
-                    transform.localScale = _scale;
+                    Transform.localScale = _scale;
                 }
             }
         }
@@ -121,18 +144,15 @@ namespace TutorialFPS
         {
             get
             {
-                if (InstanceObject != null)
-                {
-                    _rotation = transform.rotation;
-                }
+                _rotation = Transform.rotation;
                 return _rotation;
             }
             set
             {
                 _rotation = value;
-                if (InstanceObject != null)
+                if ((object)InstanceObject != null)
                 {
-                    transform.rotation = _rotation;
+                    Transform.rotation = _rotation;
                 }
             }
         }
@@ -143,10 +163,10 @@ namespace TutorialFPS
         {
             get
             {
-                if (_rigidbody != null)
-                    return _rigidbody;
+                if ((object)_rigidbody == null && (object)InstanceObject != null)
+                    _rigidbody = GetComponent<Rigidbody>();
 
-                return _rigidbody = GetComponent<Rigidbody>();
+                return _rigidbody;
             }
         }
         /// <summary>
@@ -162,13 +182,17 @@ namespace TutorialFPS
         /// </summary>
         public bool IsVisible
         {
-            get { return _isVisible; }
+            get
+            {
+                if (!Renderer)
+                    return false;
+
+                return Renderer.enabled;
+            }
             set
             {
                 _isVisible = value;
-
-                if (_renderer!=null)
-                    _renderer.enabled = _isVisible;
+                SetVisibility(transform, _isVisible);
             }
         }
 
@@ -178,6 +202,7 @@ namespace TutorialFPS
         protected virtual void Awake()
         {
             _instanceObject = gameObject;
+            _layer = InstanceObject.layer;
             _name = _instanceObject.name;
         }
 
@@ -199,6 +224,7 @@ namespace TutorialFPS
                 SetLayer(d, lvl);
             }
         }
+
         private void SetColor(Transform obj, Color color)
         {
             Renderer rendererComponent = obj.GetComponent<Renderer>();
@@ -209,6 +235,51 @@ namespace TutorialFPS
             {
                 SetColor(d, color);
             }
+        }
+
+        private void SetVisibility(Transform objTransform, bool visible)
+        {
+            var rend = objTransform.GetComponent<Renderer>();
+            if (rend)
+                rend.enabled = visible;
+
+            foreach (var r in GetComponentsInChildren<Renderer>(true))
+                r.enabled = visible;
+
+            var coll = objTransform.GetComponents<Collider>();
+            if (coll.Length > 0)
+            {
+                foreach (Collider item in coll)
+                {
+                    item.enabled = visible;
+                }
+            }
+
+            foreach (var r in GetComponentsInChildren<Collider>(true))
+                r.enabled = visible;
+
+            var rig = objTransform.GetComponent<Rigidbody>();
+            if (rig)
+            {
+                if (visible)
+                {
+                    rig.isKinematic = false;
+                }
+                else
+                {
+                    rig.isKinematic = true;
+                }
+            }
+
+            foreach (var r in GetComponentsInChildren<Rigidbody>(true))
+                if (visible)
+                {
+                    r.isKinematic = false;
+                }
+                else
+                {
+                    r.isKinematic = true;
+                }
         }
         #endregion
 

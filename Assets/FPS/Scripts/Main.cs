@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TutorialFPS.Controllers;
+using TutorialFPS.Services;
 using UnityEngine;
 
 namespace TutorialFPS
@@ -13,6 +14,9 @@ namespace TutorialFPS
         public InputController InputController { get; private set; }
         public FlashlightController FlashlightController { get; private set; }
         public InteractionController InteractionController { get; private set; }
+        public WeaponController WeaponController { get; private set; }
+        public ObjectManager ObjectManager { get; private set; }
+        public ObjectPool ObjectPool { get; private set; }
 
         private void Awake()
         {
@@ -29,6 +33,9 @@ namespace TutorialFPS
             InputController = gameObject.AddComponent<InputController>();
             FlashlightController = gameObject.AddComponent<FlashlightController>();
             InteractionController = gameObject.AddComponent<InteractionController>();
+            WeaponController = gameObject.AddComponent<WeaponController>();
+            ObjectManager = GetComponent<ObjectManager>();
+            ObjectPool = GetComponent<ObjectPool>();
         }
     }
 }
