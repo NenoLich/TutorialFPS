@@ -16,6 +16,7 @@ namespace TutorialFPS
         protected Vector3 _scale;
         protected GameObject _instanceObject;
         protected Rigidbody _rigidbody;
+        protected Collider _collider;
         protected string _name;
         protected bool _isVisible;
         #endregion
@@ -79,7 +80,7 @@ namespace TutorialFPS
             get
             {
                 if ((object) _renderer == null && (object)InstanceObject != null)
-                    _renderer = GetComponent<Renderer>();
+                    _renderer = GetComponent<Renderer>()? GetComponent<Renderer>():GetComponentInChildren<Renderer>();
 
                 return _renderer;
             }
@@ -169,6 +170,18 @@ namespace TutorialFPS
                 return _rigidbody;
             }
         }
+
+        public Collider Collider
+        {
+            get
+            {
+                if ((object)_collider == null && (object)InstanceObject != null)
+                    _collider = GetComponent<Collider>() ? GetComponent<Collider>() : GetComponentInChildren<Collider>();
+
+                return _collider;
+            }
+        }
+
         /// <summary>
         /// Ссылка на gameObject
         /// </summary>
@@ -237,15 +250,8 @@ namespace TutorialFPS
             }
         }
 
-        private void SetVisibility(Transform objTransform, bool visible)
+        protected virtual void SetVisibility(Transform objTransform, bool visible)
         {
-            var rend = objTransform.GetComponent<Renderer>();
-            if (rend)
-                rend.enabled = visible;
-
-            foreach (var r in GetComponentsInChildren<Renderer>(true))
-                r.enabled = visible;
-
             var coll = objTransform.GetComponents<Collider>();
             if (coll.Length > 0)
             {
@@ -280,6 +286,13 @@ namespace TutorialFPS
                 {
                     r.isKinematic = true;
                 }
+
+            var rend = objTransform.GetComponent<MeshRenderer>();
+            if (rend)
+                rend.enabled = visible;
+
+            foreach (var r in GetComponentsInChildren<MeshRenderer>(true))
+                r.enabled = visible;
         }
         #endregion
 

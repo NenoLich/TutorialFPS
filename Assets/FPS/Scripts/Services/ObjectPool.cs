@@ -13,6 +13,8 @@ namespace TutorialFPS.Services
 
         private void Awake()
         {
+            _bulletPool =new Stack<Bullet>();
+
             for (int i = 0; i < BulletPoolSize; i++)
             {
                 Bullet bullet = Instantiate(Bullet).GetComponent<Bullet>();
@@ -22,7 +24,7 @@ namespace TutorialFPS.Services
 
         private void AddInPool(Bullet bullet)
         {
-            bullet.IsVisible = false;
+            bullet.Transform.parent = gameObject.transform;
             _bulletPool.Push(bullet);
         }
 
@@ -33,7 +35,8 @@ namespace TutorialFPS.Services
 
         public Bullet AcquireBullet()
         {
-            return _bulletPool.Peek() == null ? Instantiate(Bullet).GetComponent<Bullet>() : _bulletPool.Pop();
+            Bullet bullet = _bulletPool.Count == 0 ? Instantiate(Bullet).GetComponent<Bullet>() : _bulletPool.Pop();
+            return bullet;
         }
     }
 }

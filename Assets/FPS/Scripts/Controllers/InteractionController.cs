@@ -71,6 +71,7 @@ namespace TutorialFPS.Controllers
             if (_interactable != null)
             {
                 _interactable.Interact();
+                _interactionView.ShowMessage(_interactable.InteractionText);
             }
         }
     }

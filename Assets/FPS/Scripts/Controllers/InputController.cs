@@ -27,10 +27,21 @@ namespace TutorialFPS.Controllers
 
             }
 
-            if (Input.GetButtonDown("ChangeWeapon"))
+            if (Input.GetButtonDown("SwitchWeapon"))
             {
-                Main.Instance.WeaponController.ChangeWeapon();
+                Main.Instance.WeaponController.SwitchWeapon();
 
+            }
+
+            float deltaScroll = Input.GetAxis("Mouse ScrollWheel");
+            if (Mathf.Abs(deltaScroll) > 0.075f)
+            {
+                Main.Instance.WeaponController.ChangeWeapon(deltaScroll);
+            }
+
+            if (Input.GetButtonDown("Reload"))
+            {
+                Main.Instance.WeaponController.Reload();
             }
         }
     }

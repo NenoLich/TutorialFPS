@@ -14,7 +14,7 @@ namespace TutorialFPS.Models
 
         public string InteractionText
         {
-            get { return "Open"; }
+            get { return "open"; }
         }
 
         public Vector3 Forward

@@ -28,9 +28,10 @@ namespace TutorialFPS.Views
         {
             if (!InteractionText.enabled)
             {
-                InteractionText.text += interactionText;
                 InteractionText.enabled = true;
             }
+
+            InteractionText.text = _defaultText + interactionText;
         }
 
         public void HideMessage()
