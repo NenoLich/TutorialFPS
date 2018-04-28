@@ -1,42 +1,64 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Interfaces;
 using UnityEngine;
 
 namespace TutorialFPS.Services
 {
     public class ObjectPool : MonoBehaviour
     {
-        [SerializeField] private GameObject Bullet;
-        [SerializeField] private int BulletPoolSize;
+        [SerializeField] private KeyValuePair<IPoolable, int>[] Poolables;
 
-        private Stack<Bullet> _bulletPool;
+        private List<TypedStack> _poolableStacks;
 
         private void Awake()
         {
-            _bulletPool =new Stack<Bullet>();
+            _poolableStacks = new List<TypedStack>(Poolables.Length);
 
-            for (int i = 0; i < BulletPoolSize; i++)
+            for (int i = 0; i < Poolables.Length; i++)
             {
-                Bullet bullet = Instantiate(Bullet).GetComponent<Bullet>();
-                AddInPool(bullet);
+                _poolableStacks[i]=new TypedStack();
+
+                for (int j = 0; j < Poolables[i].Value; j++)
+                {
+                    IPoolable poolable = Instantiate(Poolables[i].Key.GetInstance()).GetComponent<IPoolable>();
+                    AddInPoolByIndex(poolable, i);
+                }
             }
         }
 
-        private void AddInPool(Bullet bullet)
+        private void AddInPool(IPoolable poolable)
         {
-            bullet.Transform.parent = gameObject.transform;
-            _bulletPool.Push(bullet);
+            int i = 0;
+            while (poolable.GetType() != _poolableStacks[i].TypeOfpoolable)
+            {
+                i++;
+            }
+
+            AddInPoolByIndex(poolable, i);
         }
 
-        public void ReleaseBullet(Bullet bullet)
+        private void AddInPoolByIndex(IPoolable poolable,int stackIndex)
         {
-            AddInPool(bullet);
+            poolable.GetInstance().transform.parent = gameObject.transform;
+            _poolableStacks[stackIndex].Push(poolable);
         }
 
-        public Bullet AcquireBullet()
+        public void ReleasePoolable(IPoolable poolable)
         {
-            Bullet bullet = _bulletPool.Count == 0 ? Instantiate(Bullet).GetComponent<Bullet>() : _bulletPool.Pop();
-            return bullet;
+            AddInPool(poolable);
+        }
+
+        public T AcquirePoolable<T>() where T:IPoolable
+        {
+            int i = 0;
+            while (typeof(T) != _poolableStacks[i].TypeOfpoolable)
+            {
+                i++;
+            }
+
+            IPoolable poolable = _poolableStacks[i].Count == 0 ? Instantiate(Poolables[i].Key.GetInstance()).GetComponent<IPoolable>() : _poolableStacks[i].Pop();
+            return (T)poolable;
         }
     }
 }

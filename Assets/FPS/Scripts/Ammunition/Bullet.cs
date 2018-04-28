@@ -9,15 +9,11 @@ namespace TutorialFPS
     public class Bullet : Ammunition
     {
         [SerializeField]
-        private float _timeToDestruct = 5f;
-        [SerializeField]
         private float _trailTime = 0.05f;
-
-        private float _initiationTime;
 
         private TrailRenderer _trailRenderer;
 
-        private float Damage
+        protected override float Damage
         {
             get
             {
@@ -25,7 +21,7 @@ namespace TutorialFPS
             }
         }
 
-        private float Mass
+        protected override float Mass
         {
             get
             {
@@ -33,10 +29,26 @@ namespace TutorialFPS
             }
         }
 
+        protected override float TimeToRelease
+        {
+            get
+            {
+                return _timeToRelease == 0 ? _timeToRelease = 5f : _timeToRelease;
+            }
+        }
+
+        protected override float DamageReductionMultiplier
+        {
+            get
+            {
+                return _damageReductionMultiplier == 0 ? _damageReductionMultiplier = 4f : _damageReductionMultiplier;
+            }
+        }
+
         protected override void SetVisibility(Transform objTransform, bool visible)
         {
             base.SetVisibility(objTransform, visible);
-            _trailRenderer.time = visible? _trailTime:0f;
+            _trailRenderer.time = visible ? _trailTime : 0f;
         }
 
         protected override void Awake()
@@ -46,36 +58,9 @@ namespace TutorialFPS
             IsVisible = false;
         }
 
-        public void Initialize(Vector3 force, float damageMult = 1f)
+        protected override void OnCollisionEnter(Collision collision)
         {
-            IsVisible = true;
-            _currentDamage = Damage * damageMult;
-            Invoke("Release", _timeToDestruct);
-
-            Rigidbody.mass = Mass;
-            Rigidbody.velocity = Vector3.zero;
-            Rigidbody.AddForce(force);
-            _initiationTime = Time.time;
-        }
-
-        private void Release()
-        {
-            if (IsVisible)
-            {
-                IsVisible = false;
-                Main.Instance.ObjectPool.ReleaseBullet(this);
-            }
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.collider.tag == "Player" || collision.collider.tag == "Bullet")
-            {
-                return;
-            }
-
-            _currentDamage = Damage * (1 - (Time.time - _initiationTime) * 4);
-            SetDamage(collision.collider.GetComponent<IDamagable>());
+            base.OnCollisionEnter(collision);
 
             Release();
         }

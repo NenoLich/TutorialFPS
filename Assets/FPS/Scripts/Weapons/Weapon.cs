@@ -15,6 +15,7 @@ namespace TutorialFPS
         [SerializeField] protected int _maxMagazine;
         [SerializeField] protected float _reloadTime;
         [SerializeField] protected float _fireRate;
+
         protected float _lastShotTime;
         protected Transform _firePoint;
         protected bool _reload = false;
@@ -33,25 +34,10 @@ namespace TutorialFPS
             }
         }
 
-        protected virtual float Force
-        {
-            get { return _force; }
-        }
-
-        protected virtual int MaxMagazine
-        {
-            get { return _maxMagazine; }
-        }
-
-        protected virtual float FireRate
-        {
-            get { return _fireRate; }
-        }
-
-        protected virtual float ReloadTime
-        {
-            get { return _reloadTime; }
-        }
+        protected abstract float Force { get; }
+        protected abstract int MaxMagazine { get; }
+        protected abstract float FireRate { get; }
+        protected abstract float ReloadTime { get; }
 
         protected override void Awake()
         {
@@ -65,7 +51,6 @@ namespace TutorialFPS
             _weaponView.gameObject.SetActive(visible);
         }
 
-
         public virtual void Fire()
         {
             if (Time.time - _lastShotTime < FireRate || _reload)
@@ -78,6 +63,8 @@ namespace TutorialFPS
             {
                 Reload();
             }
+
+            _lastShotTime = Time.time;
         }
 
         public void Reload()

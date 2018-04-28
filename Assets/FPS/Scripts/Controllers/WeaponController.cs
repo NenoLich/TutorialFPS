@@ -27,7 +27,7 @@ namespace TutorialFPS.Controllers
 
             Main.Instance.ObjectManager.Weapons[_currentWeaponId].IsVisible = false;
 
-            _currentWeaponId = deltaScroll > 0 ? _currentWeaponId + 1 : _currentWeaponId - 1;
+            _currentWeaponId = deltaScroll < 0 ? _currentWeaponId + 1 : _currentWeaponId - 1;
 
             if (_currentWeaponId >= Main.Instance.ObjectManager.Weapons.Length)
             {

@@ -40,17 +40,12 @@ namespace TutorialFPS
 
         public override void Fire()
         {
-            if (Time.time - _lastShotTime < FireRate || _reload)
-                return;
-
             base.Fire();
 
-            Bullet bullet = Main.Instance.ObjectPool.AcquireBullet();
+            Bullet bullet = Main.Instance.ObjectPool.AcquirePoolable<Bullet>();
             bullet.Position = FirePoint.position;
             bullet.Rotation = FirePoint.rotation;
             bullet.Initialize(FirePoint.forward * Force);
-
-            _lastShotTime = Time.time;
         }
     }
 }
