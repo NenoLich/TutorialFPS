@@ -237,6 +237,7 @@ MonoBehaviour:
   _damage: 0
   _timeToRelease: 0
   _damageReductionMultiplier: 0
+  _explosion: {fileID: 1000010608846784, guid: 6747b1742d70743a8aff8594e708b2f7, type: 2}
 --- !u!136 &136683927099094310
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -14,6 +14,8 @@ namespace TutorialFPS
         protected float _timeToRelease;
         [SerializeField]
         protected float _damageReductionMultiplier;
+        [SerializeField]
+        protected GameObject _explosion;
 
         protected float _currentDamage;
         protected float _initiationTime;
@@ -94,6 +96,11 @@ namespace TutorialFPS
         {
             if (IsVisible)
             {
+                if (_explosion != null)
+                {
+                    Instantiate(_explosion, Position, Rotation);
+                }
+
                 IsVisible = false;
                 Main.Instance.ObjectPool.ReleasePoolable(this);
                 CancelInvoke();

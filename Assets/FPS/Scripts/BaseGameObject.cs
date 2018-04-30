@@ -63,9 +63,7 @@ namespace TutorialFPS
         {
             get
             {
-                if (_color == Color.clear&&(object)Renderer != null)
-                    _color = Renderer.material.color;
-
+                _color = Renderer.material.color;
                 return _color;
             }
             set
@@ -104,9 +102,7 @@ namespace TutorialFPS
         {
             get
             {
-                if (_position == Vector3.zero && (object)InstanceObject != null)
-                    _position = Transform.position;
-
+                _position = Transform.position;
                 return _position;
             }
             set
@@ -125,9 +121,7 @@ namespace TutorialFPS
         {
             get
             {
-                if (_scale == Vector3.zero && (object)InstanceObject!=null)
-                    _scale = Transform.localScale;
-
+                _scale = Transform.localScale;
                 return _scale;
             }
             set
