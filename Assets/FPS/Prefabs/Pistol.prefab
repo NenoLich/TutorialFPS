@@ -309,5 +309,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1955d896bfea96e48aaba976b7e71202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponView: {fileID: 0}
+  _ammoType: {fileID: 114402092422448568, guid: 3842378c6ab5c6249b9056198a11896e,
+    type: 2}
   _force: 0
-  _timeout: 0
+  _maxMagazine: 0
+  _reloadTime: 0
+  _fireRate: 0

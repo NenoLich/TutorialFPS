@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TutorialFPS
@@ -252,46 +253,9 @@ namespace TutorialFPS
 
         protected virtual void SetVisibility(Transform objTransform, bool visible)
         {
-            var coll = objTransform.GetComponents<Collider>();
-            if (coll.Length > 0)
-            {
-                foreach (Collider item in coll)
-                {
-                    item.enabled = visible;
-                }
-            }
-
-            foreach (var r in GetComponentsInChildren<Collider>(true))
+            foreach (var r in GetComponentsInChildren<Collider>(true).Union(GetComponents<Collider>()))
                 r.enabled = visible;
-
-            var rig = objTransform.GetComponent<Rigidbody>();
-            if (rig)
-            {
-                if (visible)
-                {
-                    rig.isKinematic = false;
-                }
-                else
-                {
-                    rig.isKinematic = true;
-                }
-            }
-
-            foreach (var r in GetComponentsInChildren<Rigidbody>(true))
-                if (visible)
-                {
-                    r.isKinematic = false;
-                }
-                else
-                {
-                    r.isKinematic = true;
-                }
-
-            var rend = objTransform.GetComponent<MeshRenderer>();
-            if (rend)
-                rend.enabled = visible;
-
-            foreach (var r in GetComponentsInChildren<MeshRenderer>(true))
+            foreach (var r in GetComponentsInChildren<MeshRenderer>(true).Union(GetComponents<MeshRenderer>()))
                 r.enabled = visible;
         }
         #endregion

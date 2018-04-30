@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TutorialFPS.Interfaces;
 using UnityEngine;
 
 namespace TutorialFPS.Services
 {
+    [DefaultExecutionOrder(-1)]
     public class ObjectPool : MonoBehaviour
     {
-        [SerializeField] private KeyValuePair<IPoolable, int>[] Poolables;
+        [SerializeField] private Poolable[] Poolables;
 
         private List<TypedStack> _poolableStacks;
 
@@ -17,11 +19,18 @@ namespace TutorialFPS.Services
 
             for (int i = 0; i < Poolables.Length; i++)
             {
-                _poolableStacks[i]=new TypedStack();
-
-                for (int j = 0; j < Poolables[i].Value; j++)
+                IPoolable poolable = Poolables[i].gameObject.GetComponent<IPoolable>();
+                if (poolable == null)
                 {
-                    IPoolable poolable = Instantiate(Poolables[i].Key.GetInstance()).GetComponent<IPoolable>();
+                    _poolableStacks.Add(new TypedStack());
+                    continue;
+                }
+
+                _poolableStacks.Add(new TypedStack(poolable.GetType()));
+
+                for (int j = 0; j < Poolables[i].quantity; j++)
+                {
+                    poolable = Instantiate(Poolables[i].gameObject).GetComponent<IPoolable>();
                     AddInPoolByIndex(poolable, i);
                 }
             }
@@ -29,13 +38,14 @@ namespace TutorialFPS.Services
 
         private void AddInPool(IPoolable poolable)
         {
-            int i = 0;
-            while (poolable.GetType() != _poolableStacks[i].TypeOfpoolable)
+            for (int i = 0; i < _poolableStacks.Count; i++)
             {
-                i++;
+                if (poolable.GetType() == _poolableStacks[i].TypeOfpoolable)
+                {
+                    AddInPoolByIndex(poolable, i);
+                    return;
+                }
             }
-
-            AddInPoolByIndex(poolable, i);
         }
 
         private void AddInPoolByIndex(IPoolable poolable,int stackIndex)
@@ -49,16 +59,17 @@ namespace TutorialFPS.Services
             AddInPool(poolable);
         }
 
-        public T AcquirePoolable<T>() where T:IPoolable
+        public IPoolable AcquirePoolable(Type iPoolable)
         {
-            int i = 0;
-            while (typeof(T) != _poolableStacks[i].TypeOfpoolable)
+            for (int i = 0; i < _poolableStacks.Count; i++)
             {
-                i++;
+                if (iPoolable == _poolableStacks[i].TypeOfpoolable)
+                {
+                    return _poolableStacks[i].Count == 0 ? Instantiate(Poolables[i].gameObject).GetComponent<IPoolable>() : _poolableStacks[i].Pop();
+                }
             }
 
-            IPoolable poolable = _poolableStacks[i].Count == 0 ? Instantiate(Poolables[i].Key.GetInstance()).GetComponent<IPoolable>() : _poolableStacks[i].Pop();
-            return (T)poolable;
+            return null;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TutorialFPS.Interfaces;
 using UnityEngine;
@@ -12,14 +13,6 @@ namespace TutorialFPS
             get
             {
                 return _damage == 0 ? _damage = 100f : _damage;
-            }
-        }
-
-        protected override float Mass
-        {
-            get
-            {
-                return _mass == 0 ? _mass = 10f : _mass;
             }
         }
 
@@ -39,23 +32,10 @@ namespace TutorialFPS
             }
         }
 
-        protected override void SetVisibility(Transform objTransform, bool visible)
+        public override void Prepare(Transform firePoint)
         {
-            base.SetVisibility(objTransform, visible);
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            IsVisible = false;
-        }
-
-        protected override void OnCollisionEnter(Collision collision)
-        {
-            base.OnCollisionEnter(collision);
-
-            Release();
+            base.Prepare(firePoint);
+            Renderer.enabled = true;
         }
     }
 }

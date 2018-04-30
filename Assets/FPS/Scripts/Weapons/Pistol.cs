@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace TutorialFPS
@@ -36,16 +38,6 @@ namespace TutorialFPS
             {
                 return _reloadTime == 0f ? _reloadTime = 1.5f : _reloadTime;
             }
-        }
-
-        public override void Fire()
-        {
-            base.Fire();
-
-            Bullet bullet = Main.Instance.ObjectPool.AcquirePoolable<Bullet>();
-            bullet.Position = FirePoint.position;
-            bullet.Rotation = FirePoint.rotation;
-            bullet.Initialize(FirePoint.forward * Force);
         }
     }
 }

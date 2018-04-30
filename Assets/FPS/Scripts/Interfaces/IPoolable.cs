@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace TutorialFPS.Interfaces
     {
         GameObject GetInstance();
         void Release();
-        void SetDefaults();
+        void Prepare(Transform parent);
     }
 }
 

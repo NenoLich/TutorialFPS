@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Interfaces;
+using TutorialFPS.Services;
 using TutorialFPS.Views;
 using UnityEngine;
 
@@ -11,6 +14,7 @@ namespace TutorialFPS
     public abstract class Weapon : BaseGameObject
     {
         [SerializeField] protected WeaponView _weaponView;
+        [SerializeField] protected Ammunition _ammoType;
         [SerializeField] protected float _force;
         [SerializeField] protected int _maxMagazine;
         [SerializeField] protected float _reloadTime;
@@ -20,6 +24,7 @@ namespace TutorialFPS
         protected Transform _firePoint;
         protected bool _reload = false;
         protected int _magazine;
+        protected Ammunition _preparedAmmunition;
 
         protected Transform FirePoint
         {
@@ -43,11 +48,13 @@ namespace TutorialFPS
         {
             base.Awake();
             _magazine = MaxMagazine;
+            PrepareAmmo();
         }
 
         protected override void SetVisibility(Transform objTransform, bool visible)
         {
             base.SetVisibility(objTransform, visible);
+
             _weaponView.gameObject.SetActive(visible);
         }
 
@@ -59,9 +66,15 @@ namespace TutorialFPS
             _magazine--;
             _weaponView.SetMagazineView(_magazine, MaxMagazine);
 
+            _preparedAmmunition.Initialize(FirePoint.forward * Force);
+
             if (_magazine == 0)
             {
                 Reload();
+            }
+            else
+            {
+                PrepareAmmo();
             }
 
             _lastShotTime = Time.time;
@@ -84,7 +97,14 @@ namespace TutorialFPS
 
             _magazine = MaxMagazine;
             _weaponView.SetMagazineView(_magazine, MaxMagazine);
+            PrepareAmmo();
             _reload = false;
+        }
+
+        protected void PrepareAmmo()
+        {
+            _preparedAmmunition = (Ammunition)Main.Instance.ObjectPool.AcquirePoolable(_ammoType.GetType());
+            _preparedAmmunition.Prepare(FirePoint);
         }
     }
 }

@@ -24,6 +24,15 @@ namespace TutorialFPS.Services
 
             set { _typeOfpoolable = value; }
         }
+
+        public TypedStack()
+        {
+        }
+
+        public TypedStack(Type typeOfpoolable)
+        {
+            TypeOfpoolable = typeOfpoolable;
+        }
     }
 }
 

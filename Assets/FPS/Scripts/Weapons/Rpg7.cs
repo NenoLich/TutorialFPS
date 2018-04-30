@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace TutorialFPS
         {
             get
             {
-                return _force == 0f ? _force = 500f : _force;
+                return _force == 0f ? _force = 2500f : _force;
             }
         }
 
@@ -36,16 +37,6 @@ namespace TutorialFPS
             {
                 return _reloadTime == 0f ? _reloadTime = 2f : _reloadTime;
             }
-        }
-
-        public override void Fire()
-        {
-            base.Fire();
-
-            Missile missile = Main.Instance.ObjectPool.AcquirePoolable<Missile>();
-            missile.Position = FirePoint.position;
-            missile.Rotation = FirePoint.rotation;
-            missile.Initialize(FirePoint.forward * Force);
         }
     }
 }
