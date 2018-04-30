@@ -147,7 +147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 38.429993, y: -24.539978}
+  m_AnchoredPosition: {x: 38.429993, y: -24.54004}
   m_SizeDelta: {x: 64.24, y: 39.82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &906885
@@ -2928,6 +2928,12 @@ Prefab:
       propertyPath: _weaponView
       value: 
       objectReference: {fileID: 301088261}
+    - target: {fileID: 114721250517245896, guid: 97f396d7a1e1ce346866e120eb282bf8,
+        type: 2}
+      propertyPath: _ammoType
+      value: 
+      objectReference: {fileID: 114217105304547162, guid: 55dac90101ff2b04e90ff651ea34e92c,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 97f396d7a1e1ce346866e120eb282bf8, type: 2}
   m_IsPrefabParent: 0

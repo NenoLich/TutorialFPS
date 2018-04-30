@@ -67,6 +67,7 @@ namespace TutorialFPS
             _weaponView.SetMagazineView(_magazine, MaxMagazine);
 
             _preparedAmmunition.Initialize(FirePoint.forward * Force);
+            _preparedAmmunition.Transform.parent = null;
 
             if (_magazine == 0)
             {
@@ -78,6 +79,11 @@ namespace TutorialFPS
             }
 
             _lastShotTime = Time.time;
+        }
+
+        public virtual void AlternateFire()
+        {
+            
         }
 
         public void Reload()

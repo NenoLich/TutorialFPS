@@ -81,7 +81,7 @@ namespace TutorialFPS
             get
             {
                 if ((object) _renderer == null && (object)InstanceObject != null)
-                    _renderer = GetComponent<Renderer>()? GetComponent<Renderer>():GetComponentInChildren<Renderer>();
+                    _renderer = GetComponent<MeshRenderer>()? GetComponent<MeshRenderer>():GetComponentInChildren<MeshRenderer>();
 
                 return _renderer;
             }

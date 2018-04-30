@@ -38,5 +38,27 @@ namespace TutorialFPS
                 return _reloadTime == 0f ? _reloadTime = 2f : _reloadTime;
             }
         }
+
+        public override void AlternateFire()
+        {
+            if (Time.time - _lastShotTime < FireRate || _reload)
+                return;
+
+            _magazine--;
+            _weaponView.SetMagazineView(_magazine, MaxMagazine);
+
+            _preparedAmmunition.Initialize(FirePoint.forward * Force);
+
+            if (_magazine == 0)
+            {
+                Reload();
+            }
+            else
+            {
+                PrepareAmmo();
+            }
+
+            _lastShotTime = Time.time;
+        }
     }
 }

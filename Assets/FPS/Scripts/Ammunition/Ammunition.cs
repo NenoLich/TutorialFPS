@@ -46,6 +46,10 @@ namespace TutorialFPS
                     r.velocity = Vector3.zero;
                 }
 
+            foreach (var trailRenderer in GetComponentsInChildren<TrailRenderer>(true).Union(GetComponents<TrailRenderer>()))
+            {
+                trailRenderer.enabled = visible;
+            }
         }
 
         public virtual void Prepare(Transform firePoint)
@@ -53,6 +57,15 @@ namespace TutorialFPS
             Position = firePoint.position;
             Rotation = firePoint.rotation;
             Transform.parent = firePoint;
+
+            if ((object)Collider != null)
+            {
+                Collider.enabled = true;
+            }
+            if ((object)Renderer != null)
+            {
+                Renderer.enabled = true;
+            }
         }
 
         public void Initialize(Vector3 force, float damageMult = 1f)
@@ -83,6 +96,7 @@ namespace TutorialFPS
             {
                 IsVisible = false;
                 Main.Instance.ObjectPool.ReleasePoolable(this);
+                CancelInvoke();
             }
         }
 

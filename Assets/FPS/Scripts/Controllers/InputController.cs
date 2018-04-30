@@ -27,6 +27,12 @@ namespace TutorialFPS.Controllers
 
             }
 
+            if (Input.GetButton("Fire2"))
+            {
+                Main.Instance.WeaponController.AlternateFire();
+
+            }
+
             if (Input.GetButtonDown("SwitchWeapon"))
             {
                 Main.Instance.WeaponController.SwitchWeapon();

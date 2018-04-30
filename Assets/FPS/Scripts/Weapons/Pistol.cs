@@ -12,7 +12,7 @@ namespace TutorialFPS
         {
             get
             {
-                return _force == 0f ? _force = 350f : _force;
+                return _force == 0f ? _force = 1000f : _force;
             }
         }
 

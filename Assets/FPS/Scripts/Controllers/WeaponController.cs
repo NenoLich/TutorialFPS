@@ -59,6 +59,11 @@ namespace TutorialFPS.Controllers
             Main.Instance.ObjectManager.Weapons[_currentWeaponId].Fire();
         }
 
+        public void AlternateFire()
+        {
+            Main.Instance.ObjectManager.Weapons[_currentWeaponId].AlternateFire();
+        }
+
         public void Reload()
         {
             Main.Instance.ObjectManager.Weapons[_currentWeaponId].Reload();

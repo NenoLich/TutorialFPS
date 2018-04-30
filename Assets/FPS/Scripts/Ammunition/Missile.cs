@@ -31,11 +31,5 @@ namespace TutorialFPS
                 return _damageReductionMultiplier == 0 ? _damageReductionMultiplier = 0f : _damageReductionMultiplier;
             }
         }
-
-        public override void Prepare(Transform firePoint)
-        {
-            base.Prepare(firePoint);
-            Renderer.enabled = true;
-        }
     }
 }
