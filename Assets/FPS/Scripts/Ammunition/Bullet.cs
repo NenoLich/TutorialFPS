@@ -8,6 +8,9 @@ namespace TutorialFPS
 {
     public class Bullet : Ammunition
     {
+        [SerializeField]
+        protected float _damageReductionMultiplier;
+
         protected override float Damage
         {
             get
@@ -24,12 +27,25 @@ namespace TutorialFPS
             }
         }
 
-        protected override float DamageReductionMultiplier
+        protected float DamageReductionMultiplier
         {
             get
             {
                 return _damageReductionMultiplier == 0 ? _damageReductionMultiplier = 4f : _damageReductionMultiplier;
             }
+        }
+
+        protected override void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.tag == "Player" || collision.collider.tag == "Bullet")
+            {
+                return;
+            }
+
+            _currentDamage = Damage * (1 - (Time.time - _initiationTime) * DamageReductionMultiplier);
+            SetDamage(collision.collider.GetComponent<IDamagable>());
+
+            Release();
         }
     }
 }

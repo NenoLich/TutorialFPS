@@ -13,8 +13,6 @@ namespace TutorialFPS
         [SerializeField]
         protected float _timeToRelease;
         [SerializeField]
-        protected float _damageReductionMultiplier;
-        [SerializeField]
         protected GameObject _explosion;
 
         protected float _currentDamage;
@@ -22,7 +20,6 @@ namespace TutorialFPS
 
         protected abstract float Damage { get; }
         protected abstract float TimeToRelease { get; }
-        protected abstract float DamageReductionMultiplier { get; }
 
         protected override void Awake()
         {
@@ -107,17 +104,6 @@ namespace TutorialFPS
             }
         }
 
-        protected virtual void OnCollisionEnter(Collision collision)
-        {
-            if (collision.collider.tag == "Player" || collision.collider.tag == "Bullet")
-            {
-                return;
-            }
-
-            _currentDamage = Damage * (1 - (Time.time - _initiationTime) * DamageReductionMultiplier);
-            SetDamage(collision.collider.GetComponent<IDamagable>());
-
-            Release();
-        }
+        protected abstract void OnCollisionEnter(Collision collision);
     }
 }

@@ -8,6 +8,11 @@ namespace TutorialFPS
 {
     public class Missile : Ammunition
     {
+        [SerializeField]
+        private float _explosionRadius;
+        [SerializeField]
+        private float _explosionForce;
+
         protected override float Damage
         {
             get
@@ -24,12 +29,28 @@ namespace TutorialFPS
             }
         }
 
-        protected override float DamageReductionMultiplier
+        protected override void OnCollisionEnter(Collision collision)
         {
-            get
+            if (collision.collider.tag == "Player" || collision.collider.tag == "Bullet")
             {
-                return _damageReductionMultiplier == 0 ? _damageReductionMultiplier = 0f : _damageReductionMultiplier;
+                return;
             }
+
+            foreach (Collider coll in Physics.OverlapSphere(Position, _explosionRadius, LayerMask.GetMask("Damagable")))
+            {
+                Rigidbody _rigidbody = coll.GetComponent<Rigidbody>();
+                if ((object)_rigidbody!=null)
+                {
+                    _rigidbody.AddExplosionForce(_explosionForce,Position,_explosionRadius);
+                }
+
+                _currentDamage = Damage * (_explosionRadius - (coll.ClosestPoint(Position) - Position).magnitude) /
+                                 _explosionRadius;
+                
+                SetDamage(coll.GetComponent<IDamagable>());
+            }
+
+            Release();
         }
     }
 }

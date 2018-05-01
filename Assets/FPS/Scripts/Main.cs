@@ -18,6 +18,7 @@ namespace TutorialFPS
         public FlashlightController FlashlightController { get; private set; }
         public InteractionController InteractionController { get; private set; }
         public WeaponController WeaponController { get; private set; }
+        public NavMeshController NavMeshController { get; private set; }
 
         public ObjectManager ObjectManager
         {
@@ -61,6 +62,7 @@ namespace TutorialFPS
             FlashlightController = gameObject.AddComponent<FlashlightController>();
             InteractionController = gameObject.AddComponent<InteractionController>();
             WeaponController = gameObject.AddComponent<WeaponController>();
+            NavMeshController = gameObject.AddComponent<NavMeshController>();
         }
     }
 }
