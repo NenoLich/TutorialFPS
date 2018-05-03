@@ -55,7 +55,10 @@ namespace TutorialFPS
         {
             base.SetVisibility(objTransform, visible);
 
-            _weaponView.gameObject.SetActive(visible);
+            if (_weaponView != null)
+            {
+                _weaponView.gameObject.SetActive(visible);
+            }
         }
 
         public virtual void Fire()
@@ -64,7 +67,11 @@ namespace TutorialFPS
                 return;
 
             _magazine--;
-            _weaponView.SetMagazineView(_magazine, MaxMagazine);
+            if (_weaponView != null)
+            {
+                _weaponView.SetMagazineView(_magazine, MaxMagazine);
+
+            }
 
             _preparedAmmunition.Initialize(FirePoint.forward * Force);
             _preparedAmmunition.Transform.parent = null;
@@ -83,7 +90,7 @@ namespace TutorialFPS
 
         public virtual void AlternateFire()
         {
-            
+
         }
 
         public void Reload()
@@ -102,7 +109,13 @@ namespace TutorialFPS
             yield return new WaitForSeconds(ReloadTime);
 
             _magazine = MaxMagazine;
-            _weaponView.SetMagazineView(_magazine, MaxMagazine);
+
+            if (_weaponView != null)
+            {
+                _weaponView.SetMagazineView(_magazine, MaxMagazine);
+
+            }
+
             PrepareAmmo();
             _reload = false;
         }

@@ -41,7 +41,7 @@ namespace TutorialFPS.Controllers
 
         private void Move()
         {
-            if (_agent.hasPath || _agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
+            if (_agent.remainingDistance > _agent.stoppingDistance)
             {
                 _animator.SetBool("Moving", true);
                 return;
@@ -59,9 +59,10 @@ namespace TutorialFPS.Controllers
         {
             Move();
             
-            if (_agent.isOnOffMeshLink&& _agent.nextOffMeshLinkData.activated)
+            if (_agent.isOnOffMeshLink&&_agent.currentOffMeshLinkData.activated)
             {
                 _animator.SetTrigger("Jump");
+                _agent.ActivateCurrentOffMeshLink(false);
             }
         }
     }
