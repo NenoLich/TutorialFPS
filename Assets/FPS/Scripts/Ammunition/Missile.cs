@@ -31,23 +31,27 @@ namespace TutorialFPS
 
         protected override void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.tag == "Player" || collision.collider.tag == "Bullet")
+            if (collision.collider.tag == "Bullet"||collision.transform.root==_rootParent)
             {
                 return;
             }
 
-            foreach (Collider coll in Physics.OverlapSphere(Position, _explosionRadius, LayerMask.GetMask("Damagable")))
+            foreach (Collider coll in Physics.OverlapSphere(Position, _explosionRadius))
             {
                 Rigidbody _rigidbody = coll.GetComponent<Rigidbody>();
-                if ((object)_rigidbody!=null)
+                if (_rigidbody!=null)
                 {
                     _rigidbody.AddExplosionForce(_explosionForce,Position,_explosionRadius);
                 }
 
-                _currentDamage = Damage * (_explosionRadius - (coll.ClosestPoint(Position) - Position).magnitude) /
-                                 _explosionRadius;
-                
-                SetDamage(coll.GetComponent<IDamagable>());
+                IDamagable iDamagable = coll.GetComponent<IDamagable>();
+                if (iDamagable!=null)
+                {
+                    _currentDamage = Damage * (_explosionRadius - (coll.ClosestPoint(Position) - Position).magnitude) /
+                                     _explosionRadius;
+
+                    SetDamage(iDamagable);
+                }
             }
 
             Release();

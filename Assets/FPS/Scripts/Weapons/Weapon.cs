@@ -13,6 +13,8 @@ namespace TutorialFPS
     /// </summary>
     public abstract class Weapon : BaseGameObject
     {
+        [HideInInspector] public bool _reload = false;
+
         [SerializeField] protected WeaponView _weaponView;
         [SerializeField] protected Ammunition _ammoType;
         [SerializeField] protected float _force;
@@ -22,7 +24,6 @@ namespace TutorialFPS
 
         protected float _lastShotTime;
         protected Transform _firePoint;
-        protected bool _reload = false;
         protected int _magazine;
         protected Ammunition _preparedAmmunition;
 
@@ -30,7 +31,7 @@ namespace TutorialFPS
         {
             get
             {
-                if ((object)_firePoint == null)
+                if (_firePoint == null)
                 {
                     _firePoint = Transform.Find("FirePoint");
                 }
@@ -41,7 +42,7 @@ namespace TutorialFPS
 
         protected abstract float Force { get; }
         protected abstract int MaxMagazine { get; }
-        protected abstract float FireRate { get; }
+        public abstract float FireRate { get; }
         protected abstract float ReloadTime { get; }
 
         protected override void Awake()
@@ -73,7 +74,7 @@ namespace TutorialFPS
 
             }
 
-            _preparedAmmunition.Initialize(FirePoint.forward * Force);
+            _preparedAmmunition.Initialize(FirePoint.forward * Force,Transform.root);
             _preparedAmmunition.Transform.parent = null;
 
             if (_magazine == 0)

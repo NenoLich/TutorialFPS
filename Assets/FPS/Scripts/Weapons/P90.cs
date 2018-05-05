@@ -23,7 +23,7 @@ namespace TutorialFPS
             }
         }
 
-        protected override float FireRate
+        public override float FireRate
         {
             get
             {

@@ -14,7 +14,7 @@ namespace TutorialFPS.Views
         {
             get
             {
-                if ((object)_interactionText==null)
+                if (_interactionText==null)
                 {
                     _interactionText = GetComponent<Text>();
                     _defaultText = _interactionText.text;

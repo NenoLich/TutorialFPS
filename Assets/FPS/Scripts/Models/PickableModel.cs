@@ -21,7 +21,7 @@ namespace TutorialFPS.Models
         {
             get
             {
-                if ((object)_pickable==null)
+                if (_pickable==null)
                 {
                     _pickable = Camera.main.transform.Find("Pickable");
                 }

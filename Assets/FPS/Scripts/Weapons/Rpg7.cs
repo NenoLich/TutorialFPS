@@ -23,7 +23,7 @@ namespace TutorialFPS
             }
         }
 
-        protected override float FireRate
+        public override float FireRate
         {
             get
             {
@@ -47,7 +47,7 @@ namespace TutorialFPS
             _magazine--;
             _weaponView.SetMagazineView(_magazine, MaxMagazine);
 
-            _preparedAmmunition.Initialize(FirePoint.forward * Force);
+            _preparedAmmunition.Initialize(FirePoint.forward * Force,Transform.root);
 
             if (_magazine == 0)
             {

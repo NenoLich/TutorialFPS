@@ -32,7 +32,7 @@ namespace TutorialFPS.Controllers
             {
                 if (hit.collider.tag == "Interactable")
                 {
-                    if (TextActive == false && (object)_interactable == null)
+                    if (TextActive == false && _interactable == null)
                     {
                         _interactable = hit.collider.gameObject.GetComponent<IInteractable>();
 

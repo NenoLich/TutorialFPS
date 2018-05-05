@@ -17,6 +17,7 @@ namespace TutorialFPS
 
         protected float _currentDamage;
         protected float _initiationTime;
+        protected Transform _rootParent;
 
         protected abstract float Damage { get; }
         protected abstract float TimeToRelease { get; }
@@ -57,20 +58,21 @@ namespace TutorialFPS
             Rotation = firePoint.rotation;
             Transform.parent = firePoint;
 
-            if ((object)Collider != null)
+            if (Collider != null)
             {
                 Collider.enabled = true;
             }
-            if ((object)Renderer != null)
+            if (Renderer != null)
             {
                 Renderer.enabled = true;
             }
         }
 
-        public void Initialize(Vector3 force, float damageMult = 1f)
+        public void Initialize(Vector3 force,Transform rootParent, float damageMult = 1f)
         {
             IsVisible = true;
             Invoke("Release", TimeToRelease);
+            _rootParent = rootParent;
             _currentDamage = Damage * damageMult;
             Rigidbody.AddForce(force);
             _initiationTime = Time.time;

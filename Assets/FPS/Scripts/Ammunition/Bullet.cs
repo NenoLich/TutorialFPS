@@ -37,7 +37,7 @@ namespace TutorialFPS
 
         protected override void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.tag == "Player" || collision.collider.tag == "Bullet")
+            if (collision.collider.tag == "Bullet" || collision.transform.root == _rootParent)
             {
                 return;
             }

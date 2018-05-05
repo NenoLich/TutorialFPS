@@ -42,7 +42,7 @@ namespace TutorialFPS
         {
             get
             {
-                if (_layer == -1 && (object)InstanceObject != null)
+                if (_layer == -1 && InstanceObject != null)
                     _layer = InstanceObject.layer;
 
                 return _layer;
@@ -78,7 +78,7 @@ namespace TutorialFPS
         {
             get
             {
-                if ((object) _renderer == null && (object)InstanceObject != null)
+                if ( _renderer == null && InstanceObject != null)
                     _renderer = GetComponent<MeshRenderer>()? GetComponent<MeshRenderer>():GetComponentInChildren<MeshRenderer>();
 
                 return _renderer;
@@ -89,7 +89,7 @@ namespace TutorialFPS
         {
             get
             {
-                if ((object)_transform == null && (object)InstanceObject != null)
+                if (_transform == null && InstanceObject != null)
                     _transform = GetComponent<Transform>();
 
                 return _transform;
@@ -108,7 +108,7 @@ namespace TutorialFPS
             set
             {
                 _position = value;
-                if ((object)InstanceObject != null)
+                if (InstanceObject != null)
                 {
                     Transform.position = _position;
                 }
@@ -127,7 +127,7 @@ namespace TutorialFPS
             set
             {
                 _scale = value;
-                if ((object)InstanceObject != null)
+                if (InstanceObject != null)
                 {
                     Transform.localScale = _scale;
                 }
@@ -146,7 +146,7 @@ namespace TutorialFPS
             set
             {
                 _rotation = value;
-                if ((object)InstanceObject != null)
+                if (InstanceObject != null)
                 {
                     Transform.rotation = _rotation;
                 }
@@ -159,7 +159,7 @@ namespace TutorialFPS
         {
             get
             {
-                if ((object)_rigidbody == null && (object)InstanceObject != null)
+                if (_rigidbody == null && InstanceObject != null)
                     _rigidbody = GetComponent<Rigidbody>();
 
                 return _rigidbody;
@@ -170,7 +170,7 @@ namespace TutorialFPS
         {
             get
             {
-                if ((object)_collider == null && (object)InstanceObject != null)
+                if (_collider == null && InstanceObject != null)
                     _collider = GetComponent<Collider>() ? GetComponent<Collider>() : GetComponentInChildren<Collider>();
 
                 return _collider;

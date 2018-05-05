@@ -11,6 +11,7 @@ namespace TutorialFPS
     {
         private ObjectManager _objectManager;
         private ObjectPool _objectPool;
+        private AIController _aiController;
 
         public static Main Instance { get; private set; }
         public static GameObject Player { get; private set; }
@@ -18,13 +19,12 @@ namespace TutorialFPS
         public FlashlightController FlashlightController { get; private set; }
         public InteractionController InteractionController { get; private set; }
         public WeaponController WeaponController { get; private set; }
-        public NavMeshController NavMeshController { get; private set; }
 
         public ObjectManager ObjectManager
         {
             get
             {
-                if ((object)_objectManager==null)
+                if (_objectManager==null)
                 {
                     _objectManager= GetComponent<ObjectManager>();
                 }
@@ -37,12 +37,25 @@ namespace TutorialFPS
         {
             get
             {
-                if ((object)_objectPool == null)
+                if (_objectPool == null)
                 {
                     _objectPool = GetComponent<ObjectPool>();
                 }
 
                 return _objectPool;
+            }
+        }
+
+        public AIController AiController
+        {
+            get
+            {
+                if (_aiController == null)
+                {
+                    _aiController = GetComponent<AIController>();
+                }
+
+                return _aiController;
             }
         }
 
@@ -62,7 +75,6 @@ namespace TutorialFPS
             FlashlightController = gameObject.AddComponent<FlashlightController>();
             InteractionController = gameObject.AddComponent<InteractionController>();
             WeaponController = gameObject.AddComponent<WeaponController>();
-            NavMeshController = gameObject.AddComponent<NavMeshController>();
         }
     }
 }

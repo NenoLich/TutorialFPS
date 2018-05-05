@@ -13,7 +13,7 @@ namespace TutorialFPS.Controllers
         {
             get
             {
-                if ((object)_flashlightModel == null)
+                if (_flashlightModel == null)
                     _flashlightModel=FindObjectOfType<FlashlightModel>();
 
                 return _flashlightModel;

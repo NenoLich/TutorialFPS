@@ -13,7 +13,7 @@ namespace TutorialFPS.Views
         {
             get
             {
-                if ((object)_ammoFillArea==null)
+                if (_ammoFillArea==null)
                 {
                     _ammoFillArea = transform.Find("AmmoFillArea").GetComponent<Image>();
                 }
