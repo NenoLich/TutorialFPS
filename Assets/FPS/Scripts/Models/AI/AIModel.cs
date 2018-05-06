@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using TutorialFPS;
+using TutorialFPS.Interfaces;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace TutorialFPS.Models.AI
 {
-    public class AIModel : BaseGameObject
+    public class AIModel : BaseGameObject,IDamagable
     {
         public AIBehaviour currentBehaviour;
         public Transform eyes;
@@ -24,17 +25,23 @@ namespace TutorialFPS.Models.AI
         [HideInInspector] public NavMeshAgent navMeshAgent;
         [HideInInspector] public Transform[] waypoints;
         [HideInInspector] public int nextWayPoint;
-        [HideInInspector] public Weapon weapon;
+        [HideInInspector] public WeaponModel weapon;
         [HideInInspector] public float lastTimeTargetUpdated;
+        [HideInInspector] public bool isDead;
 
+        [SerializeField]
+        private float _maxHealth = 100f;
         private float timeElapsed;
         private float lastTimeElapsed;
+
+        public float Health { get; private set; }
 
         protected override void Awake()
         {
             base.Awake();
             navMeshAgent = GetComponent<NavMeshAgent>();
-            weapon = GetComponentInChildren<Weapon>();
+            weapon = GetComponentInChildren<WeaponModel>();
+            Health = _maxHealth;
         }
 
         private void Update()
@@ -65,6 +72,7 @@ namespace TutorialFPS.Models.AI
         {
             timeElapsed = 0;
             lastTimeElapsed = 0;
+            lastTimeTargetUpdated = Time.time;
         }
 
         public void Coroutine(Func<IEnumerator> routine)
@@ -76,6 +84,14 @@ namespace TutorialFPS.Models.AI
         {
             target = newTarget;
             lastTimeTargetUpdated = Time.time;
+        }
+
+        public void GetDamage(float damage)
+        {
+            if (Health <= 0)
+                return;
+
+            Health = Mathf.Clamp(Health - damage, 0, _maxHealth);
         }
     }
 }

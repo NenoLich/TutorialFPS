@@ -6,9 +6,8 @@ namespace TutorialFPS.Services
 {
     public enum Notification
     {
-
-
+        WeaponMagazineChanged,
+        UpdateHealth
     }
-
 }
 

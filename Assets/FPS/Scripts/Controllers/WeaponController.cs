@@ -1,5 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Models;
+using TutorialFPS.Services;
+using TutorialFPS.Views;
 using UnityEngine;
 
 namespace TutorialFPS.Controllers
@@ -56,17 +59,35 @@ namespace TutorialFPS.Controllers
 
         public void Fire()
         {
-            Main.Instance.ObjectManager.Weapons[_currentWeaponId].Fire();
+            Main.Instance.ObjectManager.Weapons[_currentWeaponId].weaponModel.Fire();
         }
 
         public void AlternateFire()
         {
-            Main.Instance.ObjectManager.Weapons[_currentWeaponId].AlternateFire();
+            Main.Instance.ObjectManager.Weapons[_currentWeaponId].weaponModel.AlternateFire();
         }
 
         public void Reload()
         {
-            Main.Instance.ObjectManager.Weapons[_currentWeaponId].Reload();
+            Main.Instance.ObjectManager.Weapons[_currentWeaponId].weaponModel.Reload();
+        }
+
+        public override void OnNotification(Notification notification, Object target, params object[] data)
+        {
+            base.OnNotification(notification, target, data);
+
+            switch (notification)
+            {
+                case Notification.WeaponMagazineChanged:
+                    if ((WeaponModel)target== Main.Instance.ObjectManager.Weapons[_currentWeaponId].weaponModel)
+                    {
+                        Main.Instance.ObjectManager.Weapons[_currentWeaponId].weaponView.SetMagazineView(
+                            Main.Instance.ObjectManager.Weapons[_currentWeaponId].weaponModel.Magazine,
+                            Main.Instance.ObjectManager.Weapons[_currentWeaponId].weaponModel.MaxMagazine);
+                    }
+                    break;
+            }
+                
         }
     }
 }

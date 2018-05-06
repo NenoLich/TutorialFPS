@@ -9,8 +9,8 @@ namespace TutorialFPS.Models.AI
     {
         public override bool Decide(AIModel aiModel)
         {
-            bool targetVisible = LoseTarget(aiModel);
-            return targetVisible;
+            bool targetInisible = LoseTarget(aiModel);
+            return targetInisible;
         }
 
         private bool LoseTarget(AIModel aiModel)

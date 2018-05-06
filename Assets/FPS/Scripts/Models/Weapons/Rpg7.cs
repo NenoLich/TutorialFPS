@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TutorialFPS
+namespace TutorialFPS.Models
 {
-    public class Rpg7 : Weapon
+    public class Rpg7 : WeaponModel
     {
         protected override float Force
         {
@@ -15,7 +15,7 @@ namespace TutorialFPS
             }
         }
 
-        protected override int MaxMagazine
+        public override int MaxMagazine
         {
             get
             {
@@ -44,12 +44,11 @@ namespace TutorialFPS
             if (Time.time - _lastShotTime < FireRate || _reload)
                 return;
 
-            _magazine--;
-            _weaponView.SetMagazineView(_magazine, MaxMagazine);
+            Magazine--;
 
             _preparedAmmunition.Initialize(FirePoint.forward * Force,Transform.root);
 
-            if (_magazine == 0)
+            if (Magazine == 0)
             {
                 Reload();
             }

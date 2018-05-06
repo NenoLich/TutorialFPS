@@ -6,16 +6,15 @@ using TutorialFPS.Services;
 using TutorialFPS.Views;
 using UnityEngine;
 
-namespace TutorialFPS
+namespace TutorialFPS.Models
 {
     /// <summary>
     /// Базовый класс для всех типов оружий
     /// </summary>
-    public abstract class Weapon : BaseGameObject
+    public abstract class WeaponModel : BaseGameObject
     {
         [HideInInspector] public bool _reload = false;
 
-        [SerializeField] protected WeaponView _weaponView;
         [SerializeField] protected Ammunition _ammoType;
         [SerializeField] protected float _force;
         [SerializeField] protected int _maxMagazine;
@@ -40,26 +39,26 @@ namespace TutorialFPS
             }
         }
 
+        public int Magazine
+        {
+            get { return _magazine; }
+            protected set
+            {
+                _magazine = value;
+                Main.Instance.Notify(Notification.WeaponMagazineChanged,this);
+            }
+        }
+
         protected abstract float Force { get; }
-        protected abstract int MaxMagazine { get; }
+        public abstract int MaxMagazine { get; }
         public abstract float FireRate { get; }
         protected abstract float ReloadTime { get; }
 
         protected override void Awake()
         {
             base.Awake();
-            _magazine = MaxMagazine;
+            Magazine = MaxMagazine;
             PrepareAmmo();
-        }
-
-        protected override void SetVisibility(Transform objTransform, bool visible)
-        {
-            base.SetVisibility(objTransform, visible);
-
-            if (_weaponView != null)
-            {
-                _weaponView.gameObject.SetActive(visible);
-            }
         }
 
         public virtual void Fire()
@@ -67,17 +66,12 @@ namespace TutorialFPS
             if (Time.time - _lastShotTime < FireRate || _reload)
                 return;
 
-            _magazine--;
-            if (_weaponView != null)
-            {
-                _weaponView.SetMagazineView(_magazine, MaxMagazine);
-
-            }
+            Magazine--;
 
             _preparedAmmunition.Initialize(FirePoint.forward * Force,Transform.root);
             _preparedAmmunition.Transform.parent = null;
 
-            if (_magazine == 0)
+            if (Magazine == 0)
             {
                 Reload();
             }
@@ -96,7 +90,7 @@ namespace TutorialFPS
 
         public void Reload()
         {
-            if (_magazine == MaxMagazine)
+            if (Magazine == MaxMagazine)
             {
                 return;
             }
@@ -109,13 +103,7 @@ namespace TutorialFPS
             _reload = true;
             yield return new WaitForSeconds(ReloadTime);
 
-            _magazine = MaxMagazine;
-
-            if (_weaponView != null)
-            {
-                _weaponView.SetMagazineView(_magazine, MaxMagazine);
-
-            }
+            Magazine = MaxMagazine;
 
             PrepareAmmo();
             _reload = false;

@@ -18,3 +18,6 @@ MonoBehaviour:
   - decision: {fileID: 11400000, guid: f44145b5fac56ab43a874931a75f97ff, type: 2}
     trueBehaviour: {fileID: 11400000, guid: 79b6d57a632b3534bab3938978b7fcac, type: 2}
     falseBehaviour: {fileID: 11400000, guid: 773edaf37bf581043aafe20f4ac00fa2, type: 2}
+  - decision: {fileID: 11400000, guid: 5763e839246aee1469b717efd69334f2, type: 2}
+    trueBehaviour: {fileID: 11400000, guid: ab987b5d8c812e642984c2d8aec8e7f6, type: 2}
+    falseBehaviour: {fileID: 11400000, guid: 773edaf37bf581043aafe20f4ac00fa2, type: 2}

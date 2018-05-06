@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace TutorialFPS
+namespace TutorialFPS.Models
 {
-    public class Pistol : Weapon
+    public class Pistol : WeaponModel
     {
         protected override float Force
         {
@@ -16,7 +16,7 @@ namespace TutorialFPS
             }
         }
 
-        protected override int MaxMagazine
+        public override int MaxMagazine
         {
             get
             {

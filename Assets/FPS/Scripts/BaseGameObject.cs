@@ -252,6 +252,7 @@ namespace TutorialFPS
             foreach (var r in GetComponentsInChildren<MeshRenderer>(true).Union(GetComponents<MeshRenderer>()))
                 r.enabled = visible;
         }
+
         #endregion
 
     }

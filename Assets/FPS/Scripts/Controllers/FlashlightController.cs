@@ -20,19 +20,13 @@ namespace TutorialFPS.Controllers
             }
         }
 
-        public override void On()
+        public void On()
         {
-            if (isEnabled) return;
-
-            base.On();
             FlashlightModel.On();
         }
 
-        public override void Off()
+        public void Off()
         {
-            if (!isEnabled) return; 
-
-            base.Off();
             FlashlightModel.Off();
         }
 

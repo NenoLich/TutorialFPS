@@ -19,14 +19,17 @@ namespace TutorialFPS
         public FlashlightController FlashlightController { get; private set; }
         public InteractionController InteractionController { get; private set; }
         public WeaponController WeaponController { get; private set; }
+        public PlayerController PlayerController { get; private set; }
+
+        #region Properties
 
         public ObjectManager ObjectManager
         {
             get
             {
-                if (_objectManager==null)
+                if (_objectManager == null)
                 {
-                    _objectManager= GetComponent<ObjectManager>();
+                    _objectManager = GetComponent<ObjectManager>();
                 }
 
                 return _objectManager;
@@ -59,6 +62,8 @@ namespace TutorialFPS
             }
         }
 
+        #endregion
+
         private void Awake()
         {
             if (Instance)
@@ -75,6 +80,21 @@ namespace TutorialFPS
             FlashlightController = gameObject.AddComponent<FlashlightController>();
             InteractionController = gameObject.AddComponent<InteractionController>();
             WeaponController = gameObject.AddComponent<WeaponController>();
+            PlayerController = gameObject.AddComponent<PlayerController>();
+        }
+
+        public void Notify(Notification notification, Object target, params object[] data)
+        {
+            BaseController[] controller_list = GetAllControllers();
+            foreach (BaseController c in controller_list)
+            {
+                c.OnNotification(notification, target, data);
+            }
+        }
+
+        public BaseController[] GetAllControllers()
+        {
+            return GetComponents<BaseController>();
         }
     }
 }

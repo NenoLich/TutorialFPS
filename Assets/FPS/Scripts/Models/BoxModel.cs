@@ -22,7 +22,7 @@ namespace TutorialFPS.Models
         {
             Color = Color.red;
             GetComponent<Collider>().enabled = false;
-            Destroy(InstanceObject, 3f);
+            Destroy(InstanceObject, 2f);
         }
 
         public void GetDamage(float damage)

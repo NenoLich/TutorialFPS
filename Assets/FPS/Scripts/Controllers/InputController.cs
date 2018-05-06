@@ -49,11 +49,6 @@ namespace TutorialFPS.Controllers
             {
                 Main.Instance.WeaponController.Reload();
             }
-
-            //if (Input.GetButtonDown("MoveAgent"))
-            //{
-            //    Main.Instance.NavMeshController.SetDestinationPoint();
-            //}
         }
     }
 }
