@@ -14,7 +14,7 @@ namespace TutorialFPS.Models.AI
         }
         private void Hide(AIModel aiModel)
         {
-            if (aiModel.navMeshAgent.remainingDistance > aiModel.navMeshAgent.stoppingDistance || aiModel.navMeshAgent.pathPending)
+            if (aiModel.navMeshAgent.isStopped|| aiModel.navMeshAgent.remainingDistance > aiModel.navMeshAgent.stoppingDistance || aiModel.navMeshAgent.pathPending)
             {
                 return;
             }

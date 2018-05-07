@@ -15,7 +15,14 @@ namespace TutorialFPS.Models.AI
 
         private bool LoseTarget(AIModel aiModel)
         {
-            return Time.time - aiModel.lastTimeTargetUpdated > aiModel.fightingOutOfVisibleTime;
+            if (Time.time - aiModel.lastTimeTargetUpdated > aiModel.fightingOutOfVisibleTime)
+            {
+                aiModel.navMeshAgent.speed = aiModel.patrolSpeed;
+                aiModel.Animator.SetBool("Fight", false);
+                return true;
+            }
+
+            return false;
         }
     }
 }

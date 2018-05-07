@@ -20,7 +20,8 @@ public class DeathAction : Action
 
         aiModel.StopAllCoroutines();
         aiModel.isDead = true;
-        aiModel.navMeshAgent.isStopped = true;
-        Destroy(aiModel.InstanceObject,2f);
+        aiModel.SetAgentActive(false);
+        aiModel.Animator.SetTrigger("Death");
+        Destroy(aiModel.InstanceObject, 4f);
     }
 }

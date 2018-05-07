@@ -23,6 +23,8 @@ namespace TutorialFPS.Models.AI
                     && hit.collider.CompareTag("Player"))
             {
                 aiModel.target = hit.point;
+                aiModel.navMeshAgent.speed = aiModel.fightSpeed;
+                aiModel.Animator.SetBool("Fight",true);
                 return true;
             }
 

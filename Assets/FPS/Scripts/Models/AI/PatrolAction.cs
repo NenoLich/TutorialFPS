@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace TutorialFPS.Models.AI
 {
@@ -13,8 +14,11 @@ namespace TutorialFPS.Models.AI
         }
         private void Patrol(AIModel aiModel)
         {
-            aiModel.navMeshAgent.destination = aiModel.waypoints[aiModel.nextWayPoint].position;
-            aiModel.navMeshAgent.isStopped = false;
+            NavMeshPath path=new NavMeshPath();
+            aiModel.navMeshAgent.CalculatePath(aiModel.waypoints[aiModel.nextWayPoint].position, path);
+            aiModel.navMeshAgent.SetPath(path);
+
+            aiModel.SetAgentActive(true);
 
             if (aiModel.navMeshAgent.remainingDistance <= aiModel.navMeshAgent.stoppingDistance && !aiModel.navMeshAgent.pathPending)
             {

@@ -32,7 +32,7 @@ namespace TutorialFPS.Controllers
                 case Notification.UpdateHealth:
                     
                     PlayerModel player = (PlayerModel) target;
-                    PlayerView.UpdateHealth((int)player.Health);
+                    PlayerView.UpdateHealth(player.Health%1f>0? (int)player.Health+1 : (int)player.Health);
 
                     if (player.Health<=0)
                     {

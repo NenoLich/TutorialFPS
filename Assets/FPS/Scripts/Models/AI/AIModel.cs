@@ -8,19 +8,24 @@ using UnityEngine.AI;
 
 namespace TutorialFPS.Models.AI
 {
-    public class AIModel : BaseGameObject,IDamagable
+    public class AIModel : BaseGameObject, IDamagable
     {
         public AIBehaviour currentBehaviour;
         public Transform eyes;
+        public Transform spine;
         public AIBehaviour remainInBehaviour;
         public float maxHideDistance = 10f;
         public int maxHideRays = 20;
         public float attackTime = 1f;
         public float timeBetweenAttack = 4f;
+        public float walkTurnSpeed = 40f;
         public float attackTurnSpeed = 70f;
         public float fightingOutOfVisibleTime = 10f;
+        public float patrolSpeed = 2f;
+        public float fightSpeed = 4f;
 
         [HideInInspector] public CapsuleCollider enemy;
+        [HideInInspector] public Animator Animator;
         [HideInInspector] public Vector3 target;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         [HideInInspector] public Transform[] waypoints;
@@ -41,12 +46,43 @@ namespace TutorialFPS.Models.AI
             base.Awake();
             navMeshAgent = GetComponent<NavMeshAgent>();
             weapon = GetComponentInChildren<WeaponModel>();
+            Animator = GetComponent<Animator>();
             Health = _maxHealth;
+            navMeshAgent.updatePosition = false;
         }
 
         private void Update()
         {
+            if (isDead)
+            {
+                return;
+            }
+
             currentBehaviour.UpdateBehaviour(this);
+
+            if (navMeshAgent.isOnOffMeshLink && navMeshAgent.currentOffMeshLinkData.offMeshLink.activated)
+            {
+                Animator.SetTrigger("Jump");
+                navMeshAgent.currentOffMeshLinkData.offMeshLink.activated = false;
+            }
+        }
+
+        private void OnAnimatorMove()
+        {
+            if (!navMeshAgent.isStopped)
+            {
+                Position = navMeshAgent.nextPosition;
+            }
+        }
+
+        private void OnAnimatorIK()
+        {
+            if (navMeshAgent.isStopped)
+            {
+                return;
+            }
+
+            Animator.SetLookAtPosition(enemy.center);
         }
 
         public void TransitionToBehaviour(AIBehaviour nextBehaviour)
@@ -91,7 +127,14 @@ namespace TutorialFPS.Models.AI
             if (Health <= 0)
                 return;
 
+            Animator.SetTrigger("Hurt");
             Health = Mathf.Clamp(Health - damage, 0, _maxHealth);
+        }
+
+        public void SetAgentActive(bool isActive)
+        {
+            navMeshAgent.isStopped = isActive;
+            Animator.SetBool("IsStopped", !isActive);
         }
     }
 }
