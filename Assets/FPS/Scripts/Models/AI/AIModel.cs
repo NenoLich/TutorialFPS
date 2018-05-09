@@ -12,7 +12,6 @@ namespace TutorialFPS.Models.AI
     {
         public AIBehaviour currentBehaviour;
         public Transform eyes;
-        public Transform spine;
         public AIBehaviour remainInBehaviour;
         public float maxHideDistance = 10f;
         public int maxHideRays = 20;
@@ -48,7 +47,6 @@ namespace TutorialFPS.Models.AI
             weapon = GetComponentInChildren<WeaponModel>();
             Animator = GetComponent<Animator>();
             Health = _maxHealth;
-            navMeshAgent.updatePosition = false;
         }
 
         private void Update()
@@ -57,7 +55,7 @@ namespace TutorialFPS.Models.AI
             {
                 return;
             }
-
+            
             currentBehaviour.UpdateBehaviour(this);
 
             if (navMeshAgent.isOnOffMeshLink && navMeshAgent.currentOffMeshLinkData.offMeshLink.activated)
@@ -65,24 +63,6 @@ namespace TutorialFPS.Models.AI
                 Animator.SetTrigger("Jump");
                 navMeshAgent.currentOffMeshLinkData.offMeshLink.activated = false;
             }
-        }
-
-        private void OnAnimatorMove()
-        {
-            if (!navMeshAgent.isStopped)
-            {
-                Position = navMeshAgent.nextPosition;
-            }
-        }
-
-        private void OnAnimatorIK()
-        {
-            if (navMeshAgent.isStopped)
-            {
-                return;
-            }
-
-            Animator.SetLookAtPosition(enemy.center);
         }
 
         public void TransitionToBehaviour(AIBehaviour nextBehaviour)
@@ -133,7 +113,7 @@ namespace TutorialFPS.Models.AI
 
         public void SetAgentActive(bool isActive)
         {
-            navMeshAgent.isStopped = isActive;
+            navMeshAgent.isStopped = !isActive;
             Animator.SetBool("IsStopped", !isActive);
         }
     }

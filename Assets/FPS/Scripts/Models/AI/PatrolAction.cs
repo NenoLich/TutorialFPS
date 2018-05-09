@@ -14,7 +14,7 @@ namespace TutorialFPS.Models.AI
         }
         private void Patrol(AIModel aiModel)
         {
-            NavMeshPath path=new NavMeshPath();
+            NavMeshPath path = new NavMeshPath();
             aiModel.navMeshAgent.CalculatePath(aiModel.waypoints[aiModel.nextWayPoint].position, path);
             aiModel.navMeshAgent.SetPath(path);
 

@@ -14,11 +14,11 @@ namespace TutorialFPS.Models.AI
         }
         private void Hide(AIModel aiModel)
         {
-            if (aiModel.navMeshAgent.isStopped|| aiModel.navMeshAgent.remainingDistance > aiModel.navMeshAgent.stoppingDistance || aiModel.navMeshAgent.pathPending)
+            if (aiModel.navMeshAgent.isStopped|| aiModel.navMeshAgent.remainingDistance > aiModel.navMeshAgent.stoppingDistance)
             {
                 return;
             }
-
+            
             float distance =
                 aiModel.maxHideDistance * aiModel.maxHideDistance >
                 (aiModel.Position - Main.Player.transform.position).sqrMagnitude
@@ -45,7 +45,7 @@ namespace TutorialFPS.Models.AI
                 Debug.DrawLine(aiModel.Position, direction, Color.red);
 
                 newVector =
-                    Physics.Linecast(aiModel.Position, direction, out hit, LayerMask.GetMask("Ground"))
+                    Physics.Linecast(aiModel.Position, direction, out hit)
                         ? hit.point
                         : direction;
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace TutorialFPS.Models.AI
@@ -9,7 +8,7 @@ namespace TutorialFPS.Models.AI
     {
         public override void Act(AIModel aiModel)
         {
-            if (!aiModel.CheckIfCountDownElapsed(aiModel.timeBetweenAttack) || aiModel.weapon._reload)
+            if (!aiModel.CheckIfCountDownElapsed(aiModel.timeBetweenAttack) || aiModel.weapon._reload|| !DetectEnemy(aiModel))
             {
                 return;
             }
@@ -20,22 +19,15 @@ namespace TutorialFPS.Models.AI
 
         private IEnumerator Attack(AIModel aiModel)
         {
-            if (!DetectEnemy(aiModel))
-            {
-                yield break;
-            }
-
             aiModel.SetAgentActive(false);
 
-            while (Quaternion.Angle(aiModel.spine.rotation,
-                       Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 8f)
+            while (Quaternion.Angle(aiModel.Rotation,
+                       Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 5f)
             {
                 aiModel.Rotation = Quaternion.Slerp(aiModel.Rotation,
-                    Quaternion.LookRotation(new Vector3(aiModel.target.x - aiModel.eyes.position.x,0, aiModel.target.z - aiModel.eyes.position.z)) * Quaternion.Euler(0, 45, 0),
-                    aiModel.attackTurnSpeed * 0.1f);
-
-                aiModel.spine.rotation = Quaternion.Slerp(aiModel.spine.rotation,
-                    Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0),
+                    Quaternion.LookRotation(new Vector3(aiModel.target.x - aiModel.eyes.position.x,
+                        aiModel.target.y - aiModel.eyes.position.y,
+                        aiModel.target.z - aiModel.eyes.position.z)) * Quaternion.Euler(0, 45, 0),
                     aiModel.attackTurnSpeed * 0.1f);
 
                 yield return new WaitForSeconds(0.1f);
@@ -44,7 +36,7 @@ namespace TutorialFPS.Models.AI
             float elapsedTime = 0f;
             while (elapsedTime < aiModel.attackTime)
             {
-                aiModel.spine.rotation = Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0);
+                aiModel.Rotation = Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0);
 
                 aiModel.weapon.Fire();
                 if (aiModel.weapon._reload)

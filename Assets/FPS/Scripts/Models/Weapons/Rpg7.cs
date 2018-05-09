@@ -47,6 +47,7 @@ namespace TutorialFPS.Models
             Magazine--;
 
             _preparedAmmunition.Initialize(FirePoint.forward * Force,Transform.root);
+            _preparedAmmunition = null;
 
             if (Magazine == 0)
             {

@@ -45,7 +45,7 @@ namespace TutorialFPS.Models
             protected set
             {
                 _magazine = value;
-                Main.Instance.Notify(Notification.WeaponMagazineChanged,this);
+                Main.Instance.Notify(Notification.WeaponMagazineChanged, this);
             }
         }
 
@@ -61,6 +61,18 @@ namespace TutorialFPS.Models
             PrepareAmmo();
         }
 
+        protected override void SetVisibility(Transform objTransform, bool visible)
+        {
+            base.SetVisibility(objTransform, visible);
+
+            if (_reload)
+            {
+                return;
+            }
+
+            PrepareAmmo();
+        }
+
         public virtual void Fire()
         {
             if (Time.time - _lastShotTime < FireRate || _reload)
@@ -68,8 +80,9 @@ namespace TutorialFPS.Models
 
             Magazine--;
 
-            _preparedAmmunition.Initialize(FirePoint.forward * Force,Transform.root);
+            _preparedAmmunition.Initialize(FirePoint.forward * Force, Transform.root);
             _preparedAmmunition.Transform.parent = null;
+            _preparedAmmunition = null;
 
             if (Magazine == 0)
             {
@@ -106,11 +119,17 @@ namespace TutorialFPS.Models
             Magazine = MaxMagazine;
 
             PrepareAmmo();
+
             _reload = false;
         }
 
         protected void PrepareAmmo()
         {
+            if (!IsVisible || _preparedAmmunition != null)
+            {
+                return;
+            }
+
             _preparedAmmunition = (Ammunition)Main.Instance.ObjectPool.AcquirePoolable(_ammoType.GetType());
             _preparedAmmunition.Prepare(FirePoint);
         }

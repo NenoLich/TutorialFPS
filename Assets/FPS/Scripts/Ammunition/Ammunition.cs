@@ -82,7 +82,7 @@ namespace TutorialFPS
         {
             if (target == null)
                 return;
-
+            
             target.GetDamage(_currentDamage);
         }
 
