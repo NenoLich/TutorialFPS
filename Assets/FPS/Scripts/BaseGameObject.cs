@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,9 @@ namespace TutorialFPS
     public abstract class BaseGameObject : MonoBehaviour
     {
         #region Fields
+
+        public event Action<bool> VisibilityChanged;
+
         protected int _layer=-1;
         protected Color _color=Color.clear;
         protected Renderer _renderer;
@@ -201,6 +205,11 @@ namespace TutorialFPS
             {
                 _isVisible = value;
                 SetVisibility(transform, _isVisible);
+
+                if (VisibilityChanged!=null)
+                {
+                    VisibilityChanged(value);
+                }
             }
         }
 

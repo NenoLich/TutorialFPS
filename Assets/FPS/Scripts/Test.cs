@@ -6,12 +6,10 @@ using UnityEngine.AI;
 
 public class Test : MonoBehaviour
 {
-    private NavMeshAgent agent;
     public Transform wayp;
 
 	void Start ()
 	{
-	    agent = GetComponent<NavMeshAgent>();
 
 	}
 	

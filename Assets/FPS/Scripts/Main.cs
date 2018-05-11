@@ -12,6 +12,7 @@ namespace TutorialFPS
         private ObjectManager _objectManager;
         private ObjectPool _objectPool;
         private AIController _aiController;
+        private GameController _gameController;
 
         public static Main Instance { get; private set; }
         public static GameObject Player { get; private set; }
@@ -59,6 +60,19 @@ namespace TutorialFPS
                 }
 
                 return _aiController;
+            }
+        }
+
+        public GameController GameController
+        {
+            get
+            {
+                if (_gameController == null)
+                {
+                    _gameController = GetComponent<GameController>();
+                }
+
+                return _gameController;
             }
         }
 

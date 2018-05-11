@@ -8,17 +8,10 @@ namespace TutorialFPS.Services
     {
         [SerializeField]
         private Weapon[] _weapons;
-        [SerializeField]
-        private Ammunition[] _ammunitions;
 
         public Weapon[] Weapons
         {
             get { return _weapons; }
-        }
-
-        public Ammunition[] Ammunitions
-        {
-            get { return _ammunitions; }
         }
     }
 }
