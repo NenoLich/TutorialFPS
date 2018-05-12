@@ -18,10 +18,6 @@ public class DeathAction : Action
             return;
         }
 
-        aiModel.StopAllCoroutines();
-        aiModel.isDead = true;
-        aiModel.navMeshAgent.enabled = false;
-        aiModel.Animator.SetTrigger("Death");
-        Destroy(aiModel.InstanceObject, 4f);
+        aiModel.Death();
     }
 }

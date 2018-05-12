@@ -120,7 +120,8 @@ GameObject:
   - component: {fileID: 54000567207092188}
   - component: {fileID: 136984544622554400}
   - component: {fileID: 114414967630147948}
-  m_Layer: 0
+  - component: {fileID: 114334937710185000}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -406,8 +407,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1470298317704772}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.55, y: 2.844, z: -19.14}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.63, y: 6.66, z: 8.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4941411693219482}
@@ -817,6 +818,18 @@ MonoBehaviour:
   batteryCharge: 0
   maxBatteryCharge: 100
   workingTime: 100
+--- !u!114 &114334937710185000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1470298317704772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 058fb137b0a4f924b8621918b4f597d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
 --- !u!114 &114414967630147948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -887,7 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1955d896bfea96e48aaba976b7e71202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponView: {fileID: 0}
+  _reload: 0
   _ammoType: {fileID: 114402092422448568, guid: 3842378c6ab5c6249b9056198a11896e,
     type: 2}
   _force: 0
@@ -905,7 +918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc751be886e48a4d89955fafbd046d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponView: {fileID: 0}
+  _reload: 0
   _ammoType: {fileID: 114217105304547162, guid: 55dac90101ff2b04e90ff651ea34e92c,
     type: 2}
   _force: 0
@@ -923,7 +936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67dea1eddeb808942b6fdf9a16c02ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponView: {fileID: 0}
+  _reload: 0
   _ammoType: {fileID: 114402092422448568, guid: 3842378c6ab5c6249b9056198a11896e,
     type: 2}
   _force: 0

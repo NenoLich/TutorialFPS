@@ -3,16 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TutorialFPS;
 using TutorialFPS.Interfaces;
+using TutorialFPS.Services.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace TutorialFPS.Models.AI
 {
-    public class AIModel : BaseGameObject, IDamagable
+    public class AIModel : BaseGameObject, IDamagable, ISavable
     {
-        public AIBehaviour currentBehaviour;
         public Transform eyes;
-        public AIBehaviour remainInBehaviour;
         public float maxHideDistance = 10f;
         public int maxHideRays = 20;
         public float attackTime = 1f;
@@ -23,6 +22,8 @@ namespace TutorialFPS.Models.AI
         public float patrolSpeed = 2f;
         public float fightSpeed = 4f;
 
+        [HideInInspector] public int currentAiBehaviour;
+        [HideInInspector] public int remainInBehaviour;
         [HideInInspector] public CapsuleCollider enemy;
         [HideInInspector] public Animator Animator;
         [HideInInspector] public Vector3 target;
@@ -37,8 +38,51 @@ namespace TutorialFPS.Models.AI
         private float _maxHealth = 100f;
         private float timeElapsed;
         private float lastTimeElapsed;
+        private Data _data;
 
         public float Health { get; private set; }
+
+        public Data Data
+        {
+            get
+            {
+                return new Data
+                {
+                    Name = Name,
+                    Position = Position,
+                    Rotation = Rotation,
+                    Scale = Scale,
+                    HitPoints = Health,
+                    WeaponsMagazine = new[]{ weapon.Magazine },
+                    IsVisible = IsVisible,
+                    NextWayPoint=nextWayPoint,
+                    CurrentAiBehaviour=currentAiBehaviour
+                };
+            }
+            set
+            {
+                Position = value.Position;
+                Rotation = value.Rotation;
+                Scale = value.Scale;
+                Health = value.HitPoints;
+                weapon.Magazine = value.WeaponsMagazine[0];
+                IsVisible = value.IsVisible;
+                nextWayPoint = value.NextWayPoint;
+                currentAiBehaviour = value.CurrentAiBehaviour;
+            }
+        }
+
+        protected override void SetVisibility(Transform objTransform, bool visible)
+        {
+            base.SetVisibility(objTransform, visible);
+
+            isDead = !visible;
+            if (!navMeshAgent.enabled && visible)
+            {
+                navMeshAgent.enabled = true;
+                ResetCountDown();
+            }
+        }
 
         protected override void Awake()
         {
@@ -55,22 +99,11 @@ namespace TutorialFPS.Models.AI
             {
                 return;
             }
-            
-            currentBehaviour.UpdateBehaviour(this);
 
             if (navMeshAgent.isOnOffMeshLink && navMeshAgent.currentOffMeshLinkData.offMeshLink.activated)
             {
                 Animator.SetTrigger("Jump");
                 navMeshAgent.currentOffMeshLinkData.offMeshLink.activated = false;
-            }
-        }
-
-        public void TransitionToBehaviour(AIBehaviour nextBehaviour)
-        {
-            if (nextBehaviour != remainInBehaviour)
-            {
-                currentBehaviour = nextBehaviour;
-                ResetCountDown();
             }
         }
 
@@ -115,6 +148,20 @@ namespace TutorialFPS.Models.AI
         {
             navMeshAgent.isStopped = !isActive;
             Animator.SetBool("IsStopped", !isActive);
+        }
+
+        public void Death()
+        {
+            StopAllCoroutines();
+            isDead = true;
+            navMeshAgent.enabled = false;
+            Animator.SetTrigger("Death");
+            Invoke("OnDeath", 4f);
+        }
+
+        private void OnDeath()
+        {
+            SetVisibility(Transform, false);
         }
     }
 }

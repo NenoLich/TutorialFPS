@@ -32,7 +32,15 @@ namespace TutorialFPS
         /// </summary>
         public string Name
         {
-            get { return _name; }
+            get
+            {
+                if (string.IsNullOrEmpty(_name))
+                {
+                    _name = gameObject.name;
+                }
+
+                return _name; 
+            }
             set
             {
                 _name = value;

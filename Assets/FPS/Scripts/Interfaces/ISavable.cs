@@ -5,10 +5,8 @@ using UnityEngine;
 
 namespace TutorialFPS.Interfaces
 {
-    public interface ISerialize
+    public interface ISavable
     {
-        void Save(Data[] data, string path);
-        Data[] Load(string path);
+        Data Data { get; set; }
     }
 }
-

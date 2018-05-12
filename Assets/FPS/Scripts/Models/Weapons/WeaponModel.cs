@@ -42,7 +42,7 @@ namespace TutorialFPS.Models
         public int Magazine
         {
             get { return _magazine; }
-            protected set
+            set
             {
                 _magazine = value;
                 Main.Instance.Notify(Notification.WeaponMagazineChanged, this);
@@ -77,6 +77,12 @@ namespace TutorialFPS.Models
         {
             if (Time.time - _lastShotTime < FireRate || _reload)
                 return;
+
+            if (Magazine == 0)
+            {
+                Reload();
+                return;
+            }
 
             Magazine--;
 

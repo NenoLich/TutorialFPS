@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Controllers;
 using UnityEngine;
 
 namespace TutorialFPS.Models.AI
@@ -10,10 +11,10 @@ namespace TutorialFPS.Models.AI
         public Action[] actions;
         public Transition[] transitions;
 
-        public void UpdateBehaviour(AIModel aiModel)
+        public void UpdateBehaviour(AIModel aiModel,AIController aiController)
         {
             DoActions(aiModel);
-            CheckTransitions(aiModel);
+            CheckTransitions(aiModel, aiController);
         }
         public void DoActions(AIModel aiModel)
         {
@@ -23,17 +24,17 @@ namespace TutorialFPS.Models.AI
             }
 
         }
-        private void CheckTransitions(AIModel aiModel)
+        private void CheckTransitions(AIModel aiModel, AIController aiController)
         {
             for (int i = 0; i < transitions.Length; i++)
             {
                 bool decisionSucceded = transitions[i].decision.Decide(aiModel);
                 if (decisionSucceded)
                 {
-                    aiModel.TransitionToBehaviour(transitions[i].trueBehaviour);
+                    aiController.TransitionToBehaviour(transitions[i].trueBehaviour, aiModel);
                 }
                 else
-                    aiModel.TransitionToBehaviour(transitions[i].falseBehaviour);
+                    aiController.TransitionToBehaviour(transitions[i].falseBehaviour, aiModel);
             }
         }
     }

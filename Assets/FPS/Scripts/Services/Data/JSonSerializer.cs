@@ -10,16 +10,16 @@ namespace TutorialFPS.Services.Data
     {
         public static string DefaultDirectory = Path.Combine(Application.dataPath, @"/Saves/");
 
-        public Data Load(string path)
+        public Data[] Load(string path)
         {
             string str = File.ReadAllText(Path.Combine(DefaultDirectory, path));
-            return JsonUtility.FromJson<Data>(str);
+            return JsonUtility.FromJson<Data[]>(str);
         }
 
-        public void Save(Data data, string path)
+        public void Save(Data[] data, string path)
         {
-            string str = JsonUtility.ToJson(Path.Combine(DefaultDirectory, path));
-            File.WriteAllText(path, str);
+            string str = JsonUtility.ToJson(data);
+            File.WriteAllText(Path.Combine(DefaultDirectory, path), str);
         }
     }
 }

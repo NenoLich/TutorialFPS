@@ -44,6 +44,12 @@ namespace TutorialFPS.Models
             if (Time.time - _lastShotTime < FireRate || _reload)
                 return;
 
+            if (Magazine == 0)
+            {
+                Reload();
+                return;
+            }
+
             Magazine--;
 
             _preparedAmmunition.Initialize(FirePoint.forward * Force,Transform.root);

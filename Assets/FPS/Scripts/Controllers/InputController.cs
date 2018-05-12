@@ -9,8 +9,21 @@ namespace TutorialFPS.Controllers
     /// </summary>
     public sealed class InputController : BaseController
     {
+        public bool InputEnabled = true;
+        public bool PlayerInputEnabled = true;
+
         private void Update()
         {
+            if (!InputEnabled)
+            {
+                return;
+            }
+
+            if (!PlayerInputEnabled)
+            {
+                return;
+            }
+
             if (Input.GetButtonDown("Flashlight"))
             {
                 Main.Instance.FlashlightController.Switch();
@@ -49,6 +62,8 @@ namespace TutorialFPS.Controllers
             {
                 Main.Instance.WeaponController.Reload();
             }
+
+            
         }
     }
 }

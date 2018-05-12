@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4390221078914494}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boxes 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

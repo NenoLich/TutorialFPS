@@ -14,7 +14,7 @@ namespace TutorialFPS.Services.Data
             _serializer = new T();
         }
 
-        public void Save(Data data,string path)
+        public void Save(Data[] data,string path)
         {
             if (_serializer==null)
             {
@@ -24,7 +24,7 @@ namespace TutorialFPS.Services.Data
             _serializer.Save(data,path);
         }
 
-        public Data? Load(string path)
+        public Data[] Load(string path)
         {
             if (_serializer == null)
             {
