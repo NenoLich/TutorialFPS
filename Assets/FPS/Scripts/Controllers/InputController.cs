@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Services;
 using UnityEngine;
 
 namespace TutorialFPS.Controllers
@@ -17,6 +18,21 @@ namespace TutorialFPS.Controllers
             if (!InputEnabled)
             {
                 return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameController.Instance.Notify(Notification.PausePlay,this);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                GameController.Instance.QuickSave();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F9))
+            {
+                GameController.Instance.LoadLastSave();
             }
 
             if (!PlayerInputEnabled)

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Interfaces;
 using TutorialFPS.Models;
 using TutorialFPS.Services;
 using TutorialFPS.Views;
@@ -14,16 +15,30 @@ namespace TutorialFPS.Controllers
         private int _previousWeaponId;
         private float _lastScrollTime;
 
+        private PlayerModel PlayerModel
+        {
+            get
+            {
+                if (_playerModel == null)
+                {
+                    _playerModel = Main.Instance.PlayerModel;
+                }
+
+                return _playerModel;
+            }
+        }
+
         private void Start()
         {
-            _playerModel = Main.Player.GetComponent<PlayerModel>();
-            _playerModel.WeaponsMagazine =new int[Main.Instance.ObjectManager.Weapons.Length];
+            PlayerModel.WeaponsMagazine = new int[Main.Instance.ObjectManager.Weapons.Length];
 
-            for (int i = 1; i < Main.Instance.ObjectManager.Weapons.Length; i++)
+            for (int i = 0; i < Main.Instance.ObjectManager.Weapons.Length; i++)
             {
                 Main.Instance.ObjectManager.Weapons[i].IsVisible = false;
-                _playerModel.WeaponsMagazine[i] = Main.Instance.ObjectManager.Weapons[i].weaponModel.Magazine;
+                PlayerModel.WeaponsMagazine[i] = Main.Instance.ObjectManager.Weapons[i].weaponModel.Magazine;
             }
+
+            Main.Instance.ObjectManager.Weapons[0].IsVisible = true;
         }
 
         public void ChangeWeapon(float deltaScroll)
@@ -33,59 +48,59 @@ namespace TutorialFPS.Controllers
                 return;
             }
 
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].IsVisible = false;
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].IsVisible = false;
 
-            _playerModel.CurrentWeaponId = deltaScroll < 0 ? _playerModel.CurrentWeaponId + 1 : _playerModel.CurrentWeaponId - 1;
+            PlayerModel.CurrentWeaponId = deltaScroll < 0 ? PlayerModel.CurrentWeaponId + 1 : PlayerModel.CurrentWeaponId - 1;
 
-            if (_playerModel.CurrentWeaponId >= Main.Instance.ObjectManager.Weapons.Length)
+            if (PlayerModel.CurrentWeaponId >= Main.Instance.ObjectManager.Weapons.Length)
             {
-                _playerModel.CurrentWeaponId = 0;
+                PlayerModel.CurrentWeaponId = 0;
             }
-            else if (_playerModel.CurrentWeaponId < 0)
+            else if (PlayerModel.CurrentWeaponId < 0)
             {
-                _playerModel.CurrentWeaponId = Main.Instance.ObjectManager.Weapons.Length - 1;
+                PlayerModel.CurrentWeaponId = Main.Instance.ObjectManager.Weapons.Length - 1;
             }
 
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].IsVisible = true;
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].IsVisible = true;
 
             _lastScrollTime = Time.time;
         }
 
         public void SwitchWeapon()
         {
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].IsVisible = false;
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].IsVisible = false;
 
             int temp = _previousWeaponId;
-            _previousWeaponId = _playerModel.CurrentWeaponId;
-            _playerModel.CurrentWeaponId = temp;
+            _previousWeaponId = PlayerModel.CurrentWeaponId;
+            PlayerModel.CurrentWeaponId = temp;
 
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].IsVisible = true;
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].IsVisible = true;
         }
 
         public void Fire()
         {
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].weaponModel.Fire();
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].weaponModel.Fire();
         }
 
         public void AlternateFire()
         {
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].weaponModel.AlternateFire();
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].weaponModel.AlternateFire();
         }
 
         public void Reload()
         {
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].weaponModel.Reload();
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].weaponModel.Reload();
         }
 
         private void OnSaveLoaded()
         {
-            for (int i = 1; i < Main.Instance.ObjectManager.Weapons.Length; i++)
+            for (int i = 0; i < Main.Instance.ObjectManager.Weapons.Length; i++)
             {
                 Main.Instance.ObjectManager.Weapons[i].IsVisible = false;
-                Main.Instance.ObjectManager.Weapons[i].weaponModel.Magazine = _playerModel.WeaponsMagazine[i];
+                Main.Instance.ObjectManager.Weapons[i].weaponModel.Magazine = PlayerModel.WeaponsMagazine[i];
             }
 
-            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].IsVisible = true;
+            Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].IsVisible = true;
         }
 
         public override void OnNotification(Notification notification, Object target, params object[] data)
@@ -95,25 +110,29 @@ namespace TutorialFPS.Controllers
             switch (notification)
             {
                 case Notification.WeaponMagazineChanged:
-                    if ((WeaponModel)target== Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].weaponModel)
+                    for (int i = 0; i < Main.Instance.ObjectManager.Weapons.Length; i++)
                     {
-                        Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].weaponView.SetMagazineView(
-                            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].weaponModel.Magazine,
-                            Main.Instance.ObjectManager.Weapons[_playerModel.CurrentWeaponId].weaponModel.MaxMagazine);
+                        if ((WeaponModel)target == Main.Instance.ObjectManager.Weapons[i].weaponModel)
+                        {
+                            Main.Instance.ObjectManager.Weapons[i].weaponView.SetMagazineView(
+                                Main.Instance.ObjectManager.Weapons[i].weaponModel.Magazine,
+                                Main.Instance.ObjectManager.Weapons[i].weaponModel.MaxMagazine);
 
-                        _playerModel.WeaponsMagazine[_playerModel.CurrentWeaponId] = Main.Instance.ObjectManager
-                            .Weapons[_playerModel.CurrentWeaponId].weaponModel.Magazine;
+                            _playerModel.WeaponsMagazine[i] = Main.Instance.ObjectManager
+                                .Weapons[i].weaponModel.Magazine;
+                        }
                     }
+
                     break;
 
                 case Notification.SaveLoaded:
-                    if ((PlayerModel)target==_playerModel)
+                    if ((PlayerModel)target == PlayerModel)
                     {
                         OnSaveLoaded();
                     }
                     break;
             }
-                
+
         }
     }
 }

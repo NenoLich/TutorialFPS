@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TutorialFPS.Controllers;
+using TutorialFPS.Models;
 using TutorialFPS.Services;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ namespace TutorialFPS
     [DefaultExecutionOrder(-2)]
     public class Main : MonoBehaviour
     {
+        public PlayerModel PlayerModel;
+
         private ObjectManager _objectManager;
         private ObjectPool _objectPool;
         private AIController _aiController;
@@ -70,7 +73,7 @@ namespace TutorialFPS
                 DestroyImmediate(this);
             else
                 Instance = this;
-
+            
             Player = GameObject.FindGameObjectWithTag("Player");
         }
 
@@ -81,20 +84,6 @@ namespace TutorialFPS
             InteractionController = gameObject.AddComponent<InteractionController>();
             WeaponController = gameObject.AddComponent<WeaponController>();
             PlayerController = gameObject.AddComponent<PlayerController>();
-        }
-
-        public void Notify(Notification notification, Object target, params object[] data)
-        {
-            BaseController[] controller_list = GetAllControllers();
-            foreach (BaseController c in controller_list)
-            {
-                c.OnNotification(notification, target, data);
-            }
-        }
-
-        public BaseController[] GetAllControllers()
-        {
-            return GetComponents<BaseController>();
         }
     }
 }

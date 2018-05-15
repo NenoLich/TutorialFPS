@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TutorialFPS.Interfaces;
 using TutorialFPS.Services.Data;
-using UnityEditor;
 using UnityEngine;
 
 namespace TutorialFPS.Models
@@ -13,6 +12,7 @@ namespace TutorialFPS.Models
         private float _maxHealth = 100f;
 
         private float _health;
+        private Color _defaultColor;
         private bool isDead = false;
 
         public Data Data
@@ -44,6 +44,11 @@ namespace TutorialFPS.Models
             base.SetVisibility(objTransform, visible);
 
             isDead = !visible;
+            if (visible)
+            {
+                Rigidbody.velocity = Vector3.zero;
+                Color = _defaultColor;
+            }
         }
 
         protected override void Awake()
@@ -63,6 +68,7 @@ namespace TutorialFPS.Models
         private void Death()
         {
             isDead = true;
+            _defaultColor = Color;
             Color = Color.red;
             GetComponent<Collider>().enabled = false;
             Invoke("OnDeath", 2f);

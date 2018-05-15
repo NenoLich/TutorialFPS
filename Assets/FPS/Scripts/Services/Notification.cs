@@ -8,7 +8,16 @@ namespace TutorialFPS.Services
     {
         WeaponMagazineChanged,
         UpdateHealth,
-        SaveLoaded
+        SaveLoaded,
+        LoadMenu,
+        SaveMenu,
+        BackInMenu,
+        PausePlay,
+        ResumePlay,
+        Load,
+        Save,
+        Delete,
+        SaveSelectionChanged
     }
 }
 

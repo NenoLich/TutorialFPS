@@ -10,6 +10,7 @@ namespace TutorialFPS.Controllers
     public class PlayerController : BaseController
     {
         private PlayerView _playerView;
+        private PlayerModel _playerModel;
 
         public PlayerView PlayerView
         {
@@ -23,6 +24,20 @@ namespace TutorialFPS.Controllers
             }
         }
 
+        public PlayerModel PlayerModel
+        {
+            get
+            {
+                if (_playerModel == null)
+                {
+                    _playerModel = FindObjectOfType<PlayerModel>();
+                }
+                return _playerModel;
+            }
+
+            set { _playerModel = value; }
+        }
+
         public override void OnNotification(Notification notification, Object target, params object[] data)
         {
             base.OnNotification(notification, target, data);
@@ -30,13 +45,13 @@ namespace TutorialFPS.Controllers
             switch (notification)
             {
                 case Notification.UpdateHealth:
-                    
-                    PlayerModel player = (PlayerModel) target;
-                    PlayerView.UpdateHealth(player.Health%1f>0? (int)player.Health+1 : (int)player.Health);
 
-                    if (player.Health<=0)
+                    PlayerModel = (PlayerModel) target;
+                    PlayerView.UpdateHealth(PlayerModel.Health%1f>0? (int)PlayerModel.Health+1 : (int)PlayerModel.Health);
+
+                    if (PlayerModel.Health<=0)
                     {
-                        player.Death();
+                        PlayerModel.Death();
                     }
 
                     break;

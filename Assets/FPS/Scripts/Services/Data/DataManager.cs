@@ -14,24 +14,24 @@ namespace TutorialFPS.Services.Data
             _serializer = new T();
         }
 
-        public void Save(Data[] data,string path)
+        public void Save(Data[] data,string path,string password)
         {
             if (_serializer==null)
             {
                 return;
             }
 
-            _serializer.Save(data,path);
+            _serializer.Save(data,path, password);
         }
 
-        public Data[] Load(string path)
+        public Data[] Load(string path, string password)
         {
             if (_serializer == null)
             {
                 return null;
             }
 
-            return _serializer.Load(path);
+            return _serializer.Load(path, password);
         }
     }
 }

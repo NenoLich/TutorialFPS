@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Controllers;
 using TutorialFPS.Interfaces;
 using TutorialFPS.Services;
 using TutorialFPS.Services.Data;
@@ -8,7 +9,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 namespace TutorialFPS.Models
 {
-    public class PlayerModel : BaseGameObject, IDamagable,ISavable
+    public class PlayerModel : BaseGameObject, IDamagable, ISavable
     {
         [HideInInspector] public int CurrentWeaponId;
         [HideInInspector] public int[] WeaponsMagazine;
@@ -29,7 +30,7 @@ namespace TutorialFPS.Models
                     Position = Position,
                     Rotation = Rotation,
                     Scale = Scale,
-                    HitPoints = _health,
+                    HitPoints = Health,
                     CurrentWeaponID = CurrentWeaponId,
                     WeaponsMagazine = WeaponsMagazine,
                     IsVisible = IsVisible
@@ -40,32 +41,40 @@ namespace TutorialFPS.Models
                 Position = value.Position;
                 Rotation = value.Rotation;
                 Scale = value.Scale;
-                _health = value.HitPoints;
+                Health = value.HitPoints;
                 CurrentWeaponId = value.CurrentWeaponID;
                 WeaponsMagazine = value.WeaponsMagazine;
                 IsVisible = value.IsVisible;
 
-                Main.Instance.Notify(Notification.SaveLoaded, this);
+                OnSaveLoaded();
+                GameController.Instance.Notify(Notification.SaveLoaded, this);
             }
         }
 
         public float Health
         {
             get { return _health; }
-            private set { _health = value; }
+            private set
+            {
+                _health = value;
+                GameController.Instance.Notify(Notification.UpdateHealth, this);
+            }
         }
 
-        private void Start()
+        protected void Start()
         {
             Health = _maxHealth;
-            Main.Instance.Notify(Notification.UpdateHealth, this);
             _firstPersonController = GetComponent<RigidbodyFirstPersonController>();
+        }
+
+        private void OnSaveLoaded()
+        {
+            _firstPersonController.mouseLook = new UnityStandardAssets.Characters.FirstPerson.MouseLook();
+            _firstPersonController.mouseLook.Init(Transform, Camera.main.transform);
         }
 
         protected override void SetVisibility(Transform objTransform, bool visible)
         {
-            base.SetVisibility(objTransform, visible);
-
             _firstPersonController.enabled = visible;
             Main.Instance.InputController.PlayerInputEnabled = visible;
             Rigidbody.constraints = visible?RigidbodyConstraints.FreezeRotation :RigidbodyConstraints.None;
@@ -86,8 +95,11 @@ namespace TutorialFPS.Models
                 return;
 
             Health = Mathf.Clamp(Health - damage, 0, _maxHealth);
+        }
 
-            Main.Instance.Notify(Notification.UpdateHealth, this);
+        public void SetCursorLock(bool flag)
+        {
+            _firstPersonController.SetCursorLock(flag);
         }
     }
 }

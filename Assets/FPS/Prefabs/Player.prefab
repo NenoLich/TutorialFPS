@@ -829,6 +829,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058fb137b0a4f924b8621918b4f597d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentWeaponId: 0
+  WeaponsMagazine: 
   _maxHealth: 100
 --- !u!114 &114414967630147948
 MonoBehaviour:
@@ -903,6 +905,7 @@ MonoBehaviour:
   _reload: 0
   _ammoType: {fileID: 114402092422448568, guid: 3842378c6ab5c6249b9056198a11896e,
     type: 2}
+  _firePoint: {fileID: 0}
   _force: 0
   _maxMagazine: 0
   _reloadTime: 0
@@ -921,6 +924,7 @@ MonoBehaviour:
   _reload: 0
   _ammoType: {fileID: 114217105304547162, guid: 55dac90101ff2b04e90ff651ea34e92c,
     type: 2}
+  _firePoint: {fileID: 0}
   _force: 0
   _maxMagazine: 0
   _reloadTime: 0
@@ -939,6 +943,7 @@ MonoBehaviour:
   _reload: 0
   _ammoType: {fileID: 114402092422448568, guid: 3842378c6ab5c6249b9056198a11896e,
     type: 2}
+  _firePoint: {fileID: 0}
   _force: 0
   _maxMagazine: 0
   _reloadTime: 0

@@ -7,8 +7,8 @@ namespace TutorialFPS.Interfaces
 {
     public interface ISerialize
     {
-        void Save(Data[] data, string path);
-        Data[] Load(string path);
+        void Save(Data[] data, string path,string password);
+        Data[] Load(string path, string password);
     }
 }
 

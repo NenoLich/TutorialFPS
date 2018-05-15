@@ -17,6 +17,8 @@ namespace TutorialFPS.Views
         {
             if (!string.IsNullOrEmpty(_hitpoints.text))
             {
+                _hitImage.color = new Color(_hitImage.color.r, _hitImage.color.g, _hitImage.color.b, 0f);
+                StopCoroutine(ChangeImageAlpha());
                 StartCoroutine(ChangeImageAlpha());
             }
 

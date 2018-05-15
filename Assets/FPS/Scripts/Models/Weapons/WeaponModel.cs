@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Controllers;
 using TutorialFPS.Interfaces;
 using TutorialFPS.Services;
 using TutorialFPS.Views;
@@ -16,13 +17,13 @@ namespace TutorialFPS.Models
         [HideInInspector] public bool _reload = false;
 
         [SerializeField] protected Ammunition _ammoType;
+        [SerializeField] protected Transform _firePoint;
         [SerializeField] protected float _force;
         [SerializeField] protected int _maxMagazine;
         [SerializeField] protected float _reloadTime;
         [SerializeField] protected float _fireRate;
 
         protected float _lastShotTime;
-        protected Transform _firePoint;
         protected int _magazine;
         protected Ammunition _preparedAmmunition;
 
@@ -45,7 +46,7 @@ namespace TutorialFPS.Models
             set
             {
                 _magazine = value;
-                Main.Instance.Notify(Notification.WeaponMagazineChanged, this);
+                GameController.Instance.Notify(Notification.WeaponMagazineChanged, this);
             }
         }
 
@@ -64,7 +65,7 @@ namespace TutorialFPS.Models
         protected override void SetVisibility(Transform objTransform, bool visible)
         {
             base.SetVisibility(objTransform, visible);
-
+            
             if (_reload)
             {
                 return;

@@ -7,7 +7,7 @@ namespace TutorialFPS.Views
 {
     public class WeaponView : MonoBehaviour
     {
-        private Image _ammoFillArea;
+        [SerializeField] private Image _ammoFillArea;
 
         private Image AmmoFillArea
         {

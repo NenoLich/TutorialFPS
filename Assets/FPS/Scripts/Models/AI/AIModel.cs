@@ -53,7 +53,7 @@ namespace TutorialFPS.Models.AI
                     Rotation = Rotation,
                     Scale = Scale,
                     HitPoints = Health,
-                    WeaponsMagazine = new[]{ weapon.Magazine },
+                    WeaponsMagazine = new []{weapon.Magazine},
                     IsVisible = IsVisible,
                     NextWayPoint=nextWayPoint,
                     CurrentAiBehaviour=currentAiBehaviour

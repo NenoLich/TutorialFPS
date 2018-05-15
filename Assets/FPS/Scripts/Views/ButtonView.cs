@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TutorialFPS.Services;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -46,10 +47,7 @@ namespace TutorialFPS.Views
 
         public void OnPointerClick(BaseEventData eventData)
         {
-            foreach (Image image in transform.root.GetComponentsInChildren<Image>())
-            {
-                image.raycastTarget = false;
-            }
+            SetRaycastTarget(false);
 
             if (!_outline.enabled)
             {
@@ -64,13 +62,24 @@ namespace TutorialFPS.Views
             while (_outline.effectDistance.x < _maxXEffectDistance)
             {
                 _outline.effectDistance = new Vector2(Mathf.SmoothStep(_outline.effectDistance.x, _maxXEffectDistance,
-                    _animationSpeed * 0.05f)+0.3f, _outline.effectDistance.y);
+                    _animationSpeed * 0.05f) +0.3f, _outline.effectDistance.y);
 
-                yield return new WaitForSeconds(0.05f);
+                yield return StartCoroutine(CoroutineUtilities.WaitForRealTime(0.05f));
             }
 
+            SetRaycastTarget(true);
             OnClick.Invoke();
+            _outline.effectDistance=new Vector2(2, _outline.effectDistance.y);
+        }
+
+        private void SetRaycastTarget(bool flag)
+        {
+            foreach (Image image in transform.root.GetComponentsInChildren<Image>())
+            {
+                image.raycastTarget = flag;
+            }
         }
     }
+    
 }
 

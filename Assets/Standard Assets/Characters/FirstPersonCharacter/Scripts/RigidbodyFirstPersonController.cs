@@ -125,6 +125,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             mouseLook.Init (transform, cam.transform);
         }
 
+        public void SetCursorLock(bool flag)
+        {
+            mouseLook.SetCursorLock(flag);
+        }
 
         private void Update()
         {
