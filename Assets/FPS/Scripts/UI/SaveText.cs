@@ -16,9 +16,9 @@ namespace TutorialFPS.UI
         {
             GameController.Instance.Notify(Notification.SaveSelectionChanged, GetComponent<Text>());
             
-            if (_lastClickTime + maxDoubleClickTimeout < Time.realtimeSinceStartup)
+            if (Time.realtimeSinceStartup - maxDoubleClickTimeout < _lastClickTime)
             {
-                GameController.Instance.Notify(Notification.Load, gameObject);
+                GameController.Instance.Notify(Notification.SaveLoad, gameObject);
             }
             _lastClickTime = Time.realtimeSinceStartup;
         }

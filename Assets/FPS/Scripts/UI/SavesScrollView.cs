@@ -45,7 +45,7 @@ namespace TutorialFPS.UI
                     prefabTransform.position.x, prefabTransform.position.y+ (posY-= prefabTransform.rect.height- __verticalOffset), prefabTransform.position.z);
             }
 
-            posY -= posY / files.Length / 2;
+            posY += posY / files.Length/2;
             Content.sizeDelta=new Vector2(Content.sizeDelta.x, Mathf.Max(Content.sizeDelta.y, -posY));
         }
     }

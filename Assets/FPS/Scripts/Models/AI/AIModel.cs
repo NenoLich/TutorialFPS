@@ -39,6 +39,7 @@ namespace TutorialFPS.Models.AI
         private float timeElapsed;
         private float lastTimeElapsed;
         private Data _data;
+        private AudioSource _audioSource;
 
         public float Health { get; private set; }
 
@@ -90,6 +91,7 @@ namespace TutorialFPS.Models.AI
             navMeshAgent = GetComponent<NavMeshAgent>();
             weapon = GetComponentInChildren<WeaponModel>();
             Animator = GetComponent<Animator>();
+            _audioSource = GetComponent<AudioSource>();
             Health = _maxHealth;
         }
 
@@ -141,6 +143,8 @@ namespace TutorialFPS.Models.AI
                 return;
 
             Animator.SetTrigger("Hurt");
+            _audioSource.Stop();
+            _audioSource.Play();
             Health = Mathf.Clamp(Health - damage, 0, _maxHealth);
         }
 

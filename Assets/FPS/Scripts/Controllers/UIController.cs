@@ -56,13 +56,13 @@ namespace TutorialFPS.Controllers
                 case Notification.PausePlay:
                     _mainMenu.SetActive(true);
 
-                    foreach (KeyValuePair<GameObject, bool> hideableObject in _hideableObjects)
+                    foreach (GameObject hideableObject in _hideableObjects.Keys.ToList())
                     {
-                        bool isActive = hideableObject.Key.activeSelf;
-                        _hideableObjects[hideableObject.Key] = isActive;
+                        bool isActive = hideableObject.activeSelf;
+                        _hideableObjects[hideableObject] = isActive;
                         if (isActive)
                         {
-                            hideableObject.Key.SetActive(false);
+                            hideableObject.SetActive(false);
                         }
                     }
                     break;
@@ -71,21 +71,21 @@ namespace TutorialFPS.Controllers
                     ResumePlay();
                     break;
 
-                case Notification.Save:
+                case Notification.SaveLoad:
                     if (_selectedSave != null && !string.IsNullOrEmpty(_selectedSave.text))
                     {
-                        GameController.Instance.Load(Path.Combine(GameController.Instance.SavesDirectory, _selectedSave.text));
-                        ResumePlay();
+                        if (_saveMenu!=null&& _saveMenu.activeSelf)
+                        {
+                            GameController.Instance.Save(Path.Combine(GameController.Instance.SavesDirectory, _selectedSave.text+".json"));
+                            OnSaveLoadMenuEnable(_saveMenu);
+                        }
+                        if (_loadMenu != null && _loadMenu.activeSelf)
+                        {
+                            ResumePlay();
+                            GameController.Instance.Load(Path.Combine(GameController.Instance.SavesDirectory, _selectedSave.text));
+                        }
                     }
 
-                    break;
-
-                case Notification.Load:
-                    if (_selectedSave != null && !string.IsNullOrEmpty(_selectedSave.text))
-                    {
-                        GameController.Instance.Load(Path.Combine(GameController.Instance.SavesDirectory, _selectedSave.text));
-                        ResumePlay();
-                    }
                     break;
 
                 case Notification.Delete:
@@ -93,17 +93,22 @@ namespace TutorialFPS.Controllers
                     {
                         GameController.Instance.DeleteSave(Path.Combine(GameController.Instance.SavesDirectory, _selectedSave.text));
                     }
+
+                    OnSaveLoadMenuEnable(_loadMenu);
                     break;
 
                 case Notification.SaveSelectionChanged:
                     if (_selectedSave != null)
                     {
-
                         _selectedSave.color = new Color(255f, 255f, 255f);
                     }
 
                     _selectedSave = target as Text;
-                    _selectedSave.color = new Color(255f, 206f, 206f);
+                    _selectedSave.color = Color.red;
+                    break;
+
+                case Notification.NewGame:
+                    ResumePlay();
                     break;
             }
         }
@@ -128,9 +133,20 @@ namespace TutorialFPS.Controllers
 
         private void ResumePlay()
         {
-            _mainMenu.SetActive(false);
-            _saveMenu.SetActive(false);
-            _loadMenu.SetActive(false);
+            if (_mainMenu != null)
+            {
+                _mainMenu.SetActive(false);
+            }
+
+            if (_saveMenu != null)
+            {
+                _saveMenu.SetActive(false);
+            }
+
+            if (_loadMenu != null)
+            {
+                _loadMenu.SetActive(false);
+            }
 
             foreach (KeyValuePair<GameObject, bool> hideableObject in _hideableObjects.Where(x => x.Value))
             {

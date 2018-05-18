@@ -17,8 +17,13 @@ namespace TutorialFPS.Models
         [SerializeField]
         private float _maxHealth = 100f;
 
+        private AudioSource _audioSource;
+        private bool _isDead = false;
         private float _health;
         private RigidbodyFirstPersonController _firstPersonController;
+        [SerializeField] private AudioClip _playerHurt;
+        [SerializeField] private AudioClip _footstep;
+        [SerializeField] private AudioClip _playerDeath;
 
         public Data Data
         {
@@ -33,7 +38,7 @@ namespace TutorialFPS.Models
                     HitPoints = Health,
                     CurrentWeaponID = CurrentWeaponId,
                     WeaponsMagazine = WeaponsMagazine,
-                    IsVisible = IsVisible
+                    IsVisible = !_isDead
                 };
             }
             set
@@ -65,6 +70,25 @@ namespace TutorialFPS.Models
         {
             Health = _maxHealth;
             _firstPersonController = GetComponent<RigidbodyFirstPersonController>();
+            _audioSource = GetComponent<AudioSource>();
+            StartCoroutine(Step());
+        }
+
+        private IEnumerator Step()
+        {
+            Vector2 previousPosition = new Vector2(Position.x, Position.z);
+            while (!_isDead)
+            {
+                yield return new WaitForSeconds(0.25f);
+                Vector2 currentPosition = new Vector2(Position.x, Position.z);
+                if ((currentPosition - previousPosition).sqrMagnitude > 2f && !_audioSource.isPlaying)
+                {
+                    _audioSource.Stop();
+                    _audioSource.clip = _footstep;
+                    _audioSource.Play();
+                    previousPosition = currentPosition;
+                }
+            }
         }
 
         private void OnSaveLoaded()
@@ -77,16 +101,20 @@ namespace TutorialFPS.Models
         {
             _firstPersonController.enabled = visible;
             Main.Instance.InputController.PlayerInputEnabled = visible;
-            Rigidbody.constraints = visible?RigidbodyConstraints.FreezeRotation :RigidbodyConstraints.None;
+            Rigidbody.constraints = visible ? RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.None;
 
         }
 
         public void Death()
         {
-            SetVisibility(Transform,false);
+            SetVisibility(Transform, false);
+            _isDead = true;
+            _audioSource.Stop();
+            _audioSource.clip = _playerDeath;
+            _audioSource.Play();
 
-            _firstPersonController.Move(new Vector2(transform.forward.x+Mathf.Sin(Mathf.PI/Random.Range(1,4)), 
-                transform.forward.z + Mathf.Cos(Mathf.PI / Random.Range(1, 4)))); 
+            _firstPersonController.Move(new Vector2(transform.forward.x + Mathf.Sin(Mathf.PI / Random.Range(1, 4)),
+                transform.forward.z + Mathf.Cos(Mathf.PI / Random.Range(1, 4))));
         }
 
         public void GetDamage(float damage)
@@ -94,6 +122,9 @@ namespace TutorialFPS.Models
             if (Health <= 0)
                 return;
 
+            _audioSource.Stop();
+            _audioSource.clip = _playerHurt;
+            _audioSource.Play();
             Health = Mathf.Clamp(Health - damage, 0, _maxHealth);
         }
 

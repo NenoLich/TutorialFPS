@@ -18,6 +18,8 @@ namespace TutorialFPS.Models
 
         [SerializeField] protected Ammunition _ammoType;
         [SerializeField] protected Transform _firePoint;
+        [SerializeField] protected AudioClip _firingClip;
+        [SerializeField] protected AudioClip _reloadClip;
         [SerializeField] protected float _force;
         [SerializeField] protected int _maxMagazine;
         [SerializeField] protected float _reloadTime;
@@ -26,6 +28,7 @@ namespace TutorialFPS.Models
         protected float _lastShotTime;
         protected int _magazine;
         protected Ammunition _preparedAmmunition;
+        protected AudioSource _audioSource;
 
         protected Transform FirePoint
         {
@@ -60,12 +63,13 @@ namespace TutorialFPS.Models
             base.Awake();
             Magazine = MaxMagazine;
             PrepareAmmo();
+            _audioSource = GetComponent<AudioSource>();
         }
 
         protected override void SetVisibility(Transform objTransform, bool visible)
         {
             base.SetVisibility(objTransform, visible);
-            
+
             if (_reload)
             {
                 return;
@@ -87,6 +91,12 @@ namespace TutorialFPS.Models
 
             Magazine--;
 
+            if (_firingClip != null)
+            {
+                _audioSource.Stop();
+                _audioSource.clip = _firingClip;
+                _audioSource.Play();
+            }
             _preparedAmmunition.Initialize(FirePoint.forward * Force, Transform.root);
             _preparedAmmunition.Transform.parent = null;
             _preparedAmmunition = null;
@@ -121,6 +131,14 @@ namespace TutorialFPS.Models
         private IEnumerator OnReload()
         {
             _reload = true;
+
+            if (_reloadClip != null)
+            {
+                _audioSource.Stop();
+                _audioSource.clip = _reloadClip;
+                _audioSource.Play();
+            }
+
             yield return new WaitForSeconds(ReloadTime);
 
             Magazine = MaxMagazine;

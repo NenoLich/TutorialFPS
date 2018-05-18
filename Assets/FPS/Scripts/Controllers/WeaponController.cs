@@ -96,10 +96,10 @@ namespace TutorialFPS.Controllers
         {
             for (int i = 0; i < Main.Instance.ObjectManager.Weapons.Length; i++)
             {
-                Main.Instance.ObjectManager.Weapons[i].IsVisible = false;
                 Main.Instance.ObjectManager.Weapons[i].weaponModel.Magazine = PlayerModel.WeaponsMagazine[i];
+                Main.Instance.ObjectManager.Weapons[i].IsVisible = false;
             }
-
+            
             Main.Instance.ObjectManager.Weapons[PlayerModel.CurrentWeaponId].IsVisible = true;
         }
 
@@ -132,7 +132,6 @@ namespace TutorialFPS.Controllers
                     }
                     break;
             }
-
         }
     }
 }

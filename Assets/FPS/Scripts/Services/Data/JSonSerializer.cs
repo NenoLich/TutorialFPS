@@ -12,20 +12,20 @@ namespace TutorialFPS.Services.Data
 
         public Data[] Load(string path, string password)
         {
-            //string str = File.ReadAllText(Path.Combine(DefaultDirectory, path));
-            //return JsonWrapper<Data>.FromJson<Data>(str);
-
             string str = File.ReadAllText(Path.Combine(DefaultDirectory, path));
-            return JsonWrapper<Data>.FromJson<Data>(AES.Decrypt(str, password));
+            return JsonWrapper<Data>.FromJson<Data>(str);
+
+            //string str = File.ReadAllText(Path.Combine(DefaultDirectory, path));
+            //return JsonWrapper<Data>.FromJson<Data>(AES.Decrypt(str, password));
         }
 
         public void Save(Data[] data, string path,string password)
         {
-            //string str = JsonWrapper<Data>.ToJson(data);
-            //File.WriteAllText(Path.Combine(DefaultDirectory, path), str);
-
-            string str = AES.Encrypt(JsonWrapper<Data>.ToJson(data), password);
+            string str = JsonWrapper<Data>.ToJson(data);
             File.WriteAllText(Path.Combine(DefaultDirectory, path), str);
+
+            //string str = AES.Encrypt(JsonWrapper<Data>.ToJson(data), password);
+            //File.WriteAllText(Path.Combine(DefaultDirectory, path), str);
         }
     }
 }

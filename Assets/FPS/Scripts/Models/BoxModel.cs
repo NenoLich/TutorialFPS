@@ -14,6 +14,7 @@ namespace TutorialFPS.Models
         private float _health;
         private Color _defaultColor;
         private bool isDead = false;
+        private AudioSource _audioSource;
 
         public Data Data
         {
@@ -55,6 +56,7 @@ namespace TutorialFPS.Models
         {
             base.Awake();
             _health = _maxHealth;
+            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()
@@ -84,6 +86,8 @@ namespace TutorialFPS.Models
             if (_health <= 0)
                 return;
 
+            _audioSource.Stop();
+            _audioSource.Play();
             _health = Mathf.Clamp(_health - damage, 0, _maxHealth);
         }
     }

@@ -21,17 +21,17 @@ namespace TutorialFPS.Models.AI
         {
             aiModel.SetAgentActive(false);
 
-            while (Quaternion.Angle(aiModel.Rotation,
-                       Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 5f)
-            {
-                aiModel.Rotation = Quaternion.Slerp(aiModel.Rotation,
-                    Quaternion.LookRotation(new Vector3(aiModel.target.x - aiModel.eyes.position.x,
-                        aiModel.target.y - aiModel.eyes.position.y,
-                        aiModel.target.z - aiModel.eyes.position.z)) * Quaternion.Euler(0, 45, 0),
-                    aiModel.attackTurnSpeed * 0.1f);
+            //while (Quaternion.Angle(aiModel.Rotation,
+            //           Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 5f)
+            //{
+            //    aiModel.Rotation = Quaternion.Slerp(aiModel.Rotation,
+            //        Quaternion.LookRotation(new Vector3(aiModel.target.x - aiModel.eyes.position.x,
+            //            aiModel.target.y - aiModel.eyes.position.y,
+            //            aiModel.target.z - aiModel.eyes.position.z)) * Quaternion.Euler(0, 45, 0),
+            //        aiModel.attackTurnSpeed * 0.1f);
 
-                yield return new WaitForSeconds(0.1f);
-            }
+            //    yield return new WaitForSeconds(0.1f);
+            //}
 
             float elapsedTime = 0f;
             while (elapsedTime < aiModel.attackTime)

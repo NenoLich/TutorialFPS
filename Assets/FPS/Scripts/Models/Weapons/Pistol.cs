@@ -28,7 +28,7 @@ namespace TutorialFPS.Models
         {
             get
             {
-                return _fireRate == 0f ? _fireRate = 0.85f : _fireRate;
+                return _fireRate == 0f ? _fireRate = 0.5f : _fireRate;
             }
         }
 

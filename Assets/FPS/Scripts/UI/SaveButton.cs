@@ -10,7 +10,7 @@ namespace TutorialFPS.UI
     {
         public void SaveButtonClick()
         {
-            GameController.Instance.Notify(Notification.Save, gameObject);
+            GameController.Instance.Notify(Notification.SaveLoad, gameObject);
         }
     }
 }

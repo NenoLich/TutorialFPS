@@ -14,10 +14,10 @@ namespace TutorialFPS.Services
         BackInMenu,
         PausePlay,
         ResumePlay,
-        Load,
-        Save,
+        SaveLoad,
         Delete,
-        SaveSelectionChanged
+        SaveSelectionChanged,
+        NewGame
     }
 }
 

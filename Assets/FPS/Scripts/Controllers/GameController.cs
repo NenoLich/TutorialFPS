@@ -13,7 +13,7 @@ namespace TutorialFPS.Controllers
     [DefaultExecutionOrder(-1)]
     public class GameController : BaseController
     {
-        public string SavesDirectory;
+        [HideInInspector] public string SavesDirectory;
 
         private DataManager _dataManager = new DataManager();
         private string _password = "vwen21cjnj73hnncew";
@@ -23,6 +23,7 @@ namespace TutorialFPS.Controllers
         private bool _activationRequested = false;
         private bool _defaultSaveComplete = false;
         private bool _firstLoad = true;
+        private AudioSource _audioSource;
         private InputController _inputController;
         private PlayerController _playerController;
         private BaseController[] _baseControllers;
@@ -92,6 +93,7 @@ namespace TutorialFPS.Controllers
 
             DontDestroyOnLoad(gameObject);
             _dataManager.SetData<JSonSerializer>();
+            _audioSource = GetComponent<AudioSource>();
             SavesDirectory = Path.Combine(Application.dataPath, "Saves");
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -157,36 +159,36 @@ namespace TutorialFPS.Controllers
                 _loadingFinished = false;
                 _activationRequested = false;
                 _defaultSaveComplete = true;
+                _audioSource.Stop();
             }
         }
 
         public void Save(string path)
         {
-            if (!File.Exists(path))
-            {
-                return;
-            }
-
             Data[] data = ISavables.Select(x => x.Data).ToArray();
             _dataManager.Save(data, path, _password);
         }
 
         public void QuickSave()
         {
-            Save(Path.Combine(SavesDirectory, "QuickSave"));
+            Save(Path.Combine(SavesDirectory, "QuickSave.json"));
         }
 
         public void Load(string path)
         {
+            path += ".json";
             if (!File.Exists(path))
             {
                 return;
             }
 
+            _activationRequested = true;
+            Update();
+
             Data[] data = _dataManager.Load(path, _password);
             foreach (Data dataItem in data)
             {
-                ISavable savable = ISavables.First(x => x.Data.Name == dataItem.Name);
+                ISavable savable = ISavables.FirstOrDefault(x => x.Data.Name == dataItem.Name);
                 if (savable != null)
                 {
                     savable.Data = dataItem;
@@ -200,7 +202,7 @@ namespace TutorialFPS.Controllers
         {
             if (_defaultSaveComplete)
             {
-                Load(Path.Combine(Application.dataPath, "DefaultSave" + SceneManager.GetActiveScene().name + ".json"));
+                Load(Path.Combine(Application.dataPath, "DefaultSave" + SceneManager.GetActiveScene().name));
             }
             else
             {
@@ -217,6 +219,7 @@ namespace TutorialFPS.Controllers
 
         public void DeleteSave(string path)
         {
+            path += ".json";
             if (!File.Exists(path))
             {
                 return;
@@ -233,7 +236,7 @@ namespace TutorialFPS.Controllers
             }
 
             DirectoryInfo info = new DirectoryInfo(SavesDirectory);
-            string[] files = info.GetFiles().OrderByDescending(p => p.CreationTime).Select(x => x.Name).ToArray();
+            string[] files = info.GetFiles("*.json").OrderByDescending(p => p.CreationTime).Select(x => Path.GetFileNameWithoutExtension(x.FullName)).ToArray();
             return files;
         }
 
@@ -250,6 +253,10 @@ namespace TutorialFPS.Controllers
                 case Notification.ResumePlay:
                     ResumePlay();
                     break;
+
+                case Notification.NewGame:
+                    LoadDefault();
+                    break;
             }
         }
 
@@ -258,6 +265,7 @@ namespace TutorialFPS.Controllers
             Time.timeScale = 0f;
             InputController.InputEnabled = false;
             PlayerController.PlayerModel.SetCursorLock(false);
+            _audioSource.Play();
         }
 
         private void ResumePlay()
@@ -272,6 +280,7 @@ namespace TutorialFPS.Controllers
                 PlayerController.PlayerModel.SetCursorLock(true);
             }
 
+            _audioSource.Stop();
             Time.timeScale = 1f;
         }
     }

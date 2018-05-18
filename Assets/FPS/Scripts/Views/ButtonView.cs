@@ -18,11 +18,13 @@ namespace TutorialFPS.Views
 
         private Outline _outline;
         private Image image;
+        private AudioSource _audioSource;
 
         private void Start()
         {
             _outline = GetComponent<Outline>();
             image = GetComponent<Image>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
         public void OnPointerEnter(BaseEventData eventData)
@@ -48,6 +50,8 @@ namespace TutorialFPS.Views
         public void OnPointerClick(BaseEventData eventData)
         {
             SetRaycastTarget(false);
+            _audioSource.Stop();
+            _audioSource.Play();
 
             if (!_outline.enabled)
             {

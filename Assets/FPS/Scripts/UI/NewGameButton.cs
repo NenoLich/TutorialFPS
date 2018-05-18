@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using TutorialFPS.Controllers;
+using TutorialFPS.Services;
 using UnityEngine;
 
 namespace TutorialFPS.UI
@@ -10,7 +11,7 @@ namespace TutorialFPS.UI
     {
         public void NewGame()
         {
-            GameController.Instance.LoadDefault();
+            GameController.Instance.Notify(Notification.NewGame,this);
         }
     }
 }
