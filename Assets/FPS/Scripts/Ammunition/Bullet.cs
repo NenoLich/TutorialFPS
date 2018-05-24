@@ -43,7 +43,7 @@ namespace TutorialFPS
             }
 
             _currentDamage = Damage * (1 - (Time.time - _initiationTime) * DamageReductionMultiplier);
-            SetDamage(collision.collider.GetComponent<IDamagable>());
+            SetDamage(collision.collider.GetComponent<IDamagable>(),Position);
 
             Release();
         }

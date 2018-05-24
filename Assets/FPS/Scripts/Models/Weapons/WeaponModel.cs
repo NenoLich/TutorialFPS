@@ -24,6 +24,7 @@ namespace TutorialFPS.Models
         [SerializeField] protected int _maxMagazine;
         [SerializeField] protected float _reloadTime;
         [SerializeField] protected float _fireRate;
+        [SerializeField] protected ParticleSystem _muzzleFlash;
 
         protected float _lastShotTime;
         protected int _magazine;
@@ -90,6 +91,12 @@ namespace TutorialFPS.Models
             }
 
             Magazine--;
+
+            if (_muzzleFlash!=null)
+            {
+                _muzzleFlash.Stop();
+                _muzzleFlash.Play();
+            }
 
             if (_firingClip != null)
             {

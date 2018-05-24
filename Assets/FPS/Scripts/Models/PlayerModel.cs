@@ -117,7 +117,7 @@ namespace TutorialFPS.Models
                 transform.forward.z + Mathf.Cos(Mathf.PI / Random.Range(1, 4))));
         }
 
-        public void GetDamage(float damage)
+        public void GetDamage(float damage, Vector3 source)
         {
             if (Health <= 0)
                 return;

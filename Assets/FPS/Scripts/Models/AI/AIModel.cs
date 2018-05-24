@@ -36,6 +36,8 @@ namespace TutorialFPS.Models.AI
 
         [SerializeField]
         private float _maxHealth = 100f;
+        [SerializeField]
+        private ParticleSystem _blood;
         private float timeElapsed;
         private float lastTimeElapsed;
         private Data _data;
@@ -137,10 +139,16 @@ namespace TutorialFPS.Models.AI
             lastTimeTargetUpdated = Time.time;
         }
 
-        public void GetDamage(float damage)
+        public void GetDamage(float damage,Vector3 source)
         {
             if (Health <= 0)
                 return;
+
+            _blood.Stop();
+            _blood.transform.position = source;
+            _blood.transform.rotation =
+                Quaternion.LookRotation(new Vector3((source - Position).x, source.y, (source - Position).z));
+            _blood.Play();
 
             Animator.SetTrigger("Hurt");
             _audioSource.Stop();

@@ -50,7 +50,7 @@ namespace TutorialFPS
                     _currentDamage = Damage * (_explosionRadius - (coll.ClosestPoint(Position) - Position).magnitude) /
                                      _explosionRadius;
 
-                    SetDamage(iDamagable);
+                    SetDamage(iDamagable,Position);
                 }
             }
 

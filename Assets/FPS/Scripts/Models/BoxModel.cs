@@ -81,7 +81,7 @@ namespace TutorialFPS.Models
             SetVisibility(Transform, false);
         }
 
-        public void GetDamage(float damage)
+        public void GetDamage(float damage,Vector3 source)
         {
             if (_health <= 0)
                 return;

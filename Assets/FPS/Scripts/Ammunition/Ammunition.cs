@@ -78,12 +78,12 @@ namespace TutorialFPS
             _initiationTime = Time.time;
         }
 
-        protected virtual void SetDamage(IDamagable target)
+        protected virtual void SetDamage(IDamagable target,Vector3 source)
         {
             if (target == null)
                 return;
             
-            target.GetDamage(_currentDamage);
+            target.GetDamage(_currentDamage, source);
         }
 
         public GameObject GetInstance()
