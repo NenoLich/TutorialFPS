@@ -17,7 +17,7 @@ namespace TutorialFPS.Models.AI
         public float attackTime = 1f;
         public float timeBetweenAttack = 4f;
         public float walkTurnSpeed = 40f;
-        public float attackTurnSpeed = 70f;
+        public float attackTurnSpeed = 5f;
         public float fightingOutOfVisibleTime = 10f;
         public float patrolSpeed = 2f;
         public float fightSpeed = 4f;
@@ -26,24 +26,31 @@ namespace TutorialFPS.Models.AI
         [HideInInspector] public int remainInBehaviour;
         [HideInInspector] public CapsuleCollider enemy;
         [HideInInspector] public Animator Animator;
-        [HideInInspector] public Vector3 target;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         [HideInInspector] public Transform[] waypoints;
         [HideInInspector] public int nextWayPoint;
         [HideInInspector] public WeaponModel weapon;
         [HideInInspector] public float lastTimeTargetUpdated;
         [HideInInspector] public bool isDead;
+        [HideInInspector] public bool isDamaged;
 
         [SerializeField]
         private float _maxHealth = 100f;
         [SerializeField]
         private ParticleSystem _blood;
+
+        private Vector3 _target;
         private float timeElapsed;
         private float lastTimeElapsed;
         private Data _data;
         private AudioSource _audioSource;
 
         public float Health { get; private set; }
+
+        public Vector3 Target
+        {
+            get { return _target; }
+        }
 
         public Data Data
         {
@@ -111,6 +118,11 @@ namespace TutorialFPS.Models.AI
             }
         }
 
+        private void LateUpdate()
+        {
+            isDamaged = false;
+        }
+
         public bool CheckIfCountDownElapsed(float duration)
         {
             if (lastTimeElapsed != 0)
@@ -135,7 +147,7 @@ namespace TutorialFPS.Models.AI
 
         public void UpdateTarget(Vector3 newTarget)
         {
-            target = newTarget;
+            _target = newTarget;
             lastTimeTargetUpdated = Time.time;
         }
 
@@ -154,6 +166,9 @@ namespace TutorialFPS.Models.AI
             _audioSource.Stop();
             _audioSource.Play();
             Health = Mathf.Clamp(Health - damage, 0, _maxHealth);
+
+            isDamaged = true;
+            UpdateTarget(Camera.main.transform.position);
         }
 
         public void SetAgentActive(bool isActive)

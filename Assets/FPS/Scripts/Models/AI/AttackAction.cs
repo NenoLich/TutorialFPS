@@ -21,22 +21,20 @@ namespace TutorialFPS.Models.AI
         {
             aiModel.SetAgentActive(false);
 
-            //while (Quaternion.Angle(aiModel.Rotation,
-            //           Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 5f)
-            //{
-            //    aiModel.Rotation = Quaternion.Slerp(aiModel.Rotation,
-            //        Quaternion.LookRotation(new Vector3(aiModel.target.x - aiModel.eyes.position.x,
-            //            aiModel.target.y - aiModel.eyes.position.y,
-            //            aiModel.target.z - aiModel.eyes.position.z)) * Quaternion.Euler(0, 45, 0),
-            //        aiModel.attackTurnSpeed * 0.1f);
+            while (Quaternion.Angle(aiModel.Rotation,
+                           Quaternion.LookRotation(aiModel.Target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 5f)
+            {
+                aiModel.Rotation = Quaternion.Lerp(aiModel.Rotation,
+                    Quaternion.LookRotation(aiModel.Target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0),
+                    aiModel.attackTurnSpeed * 0.1f);
 
-            //    yield return new WaitForSeconds(0.1f);
-            //}
+                yield return new WaitForSeconds(0.1f);
+            }
 
             float elapsedTime = 0f;
             while (elapsedTime < aiModel.attackTime)
             {
-                aiModel.Rotation = Quaternion.LookRotation(aiModel.target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0);
+                aiModel.Rotation = Quaternion.LookRotation(aiModel.Target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0);
 
                 aiModel.weapon.Fire();
                 if (aiModel.weapon._reload)
@@ -45,6 +43,7 @@ namespace TutorialFPS.Models.AI
                 }
                 else
                 {
+                    aiModel.Animator.SetBool("Reload", false);
                     aiModel.Animator.SetTrigger("Fire");
                 }
 
@@ -62,8 +61,15 @@ namespace TutorialFPS.Models.AI
             RaycastHit hit;
 
             Debug.DrawRay(aiModel.eyes.position, (enemyCenter - aiModel.eyes.position));
-            if (Physics.SphereCast(aiModel.eyes.position, aiModel.enemy.radius, (enemyCenter - aiModel.eyes.position).normalized,
-                    out hit, (enemyCenter - aiModel.eyes.position).magnitude)
+            //if (Physics.SphereCast(aiModel.eyes.position, aiModel.enemy.radius, (enemyCenter - aiModel.eyes.position).normalized,
+            //        out hit, (enemyCenter - aiModel.eyes.position).magnitude)
+            //    && hit.collider.CompareTag("Player"))
+            //{
+            //    aiModel.UpdateTarget(hit.point);
+            //    return true;
+            //}
+
+            if (Physics.Linecast(aiModel.eyes.position,Camera.main.transform.position,out hit)
                 && hit.collider.CompareTag("Player"))
             {
                 aiModel.UpdateTarget(hit.point);

@@ -843,7 +843,7 @@ GameObject:
   - component: {fileID: 198789746330820312}
   - component: {fileID: 199697150794170440}
   m_Layer: 0
-  m_Name: WFX_MF FPS RIFLE1 (2)
+  m_Name: WFX_MF FPS RIFLE1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1051,7 +1051,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1149346517193220}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.32, y: 0, z: 3.44}
+  m_LocalPosition: {x: -0.32, y: 0, z: 1.142}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4173019517672322}
@@ -1568,16 +1568,16 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1994383082539564}
-  m_LocalRotation: {x: 0.20847099, y: 0.16793422, z: -0.012772469, w: 0.96341836}
-  m_LocalPosition: {x: 13.555595, y: -23.029678, z: 54.393223}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalRotation: {x: 0.9988969, y: 0.026988637, z: 0.038326386, w: 0.0027827395}
+  m_LocalPosition: {x: 0.002, y: 0.106, z: -0.784}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4308749755867400}
   - {fileID: 4362359796532242}
   - {fileID: 4475379983222038}
   m_Father: {fileID: 4489439451654666}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.2, y: 175.6, z: 176.897}
 --- !u!4 &4976568156193494
 Transform:
   m_ObjectHideFlags: 1
@@ -2004,7 +2004,7 @@ MonoBehaviour:
   attackTime: 1
   timeBetweenAttack: 4
   walkTurnSpeed: 30
-  attackTurnSpeed: 50
+  attackTurnSpeed: 4
   fightingOutOfVisibleTime: 10
   patrolSpeed: 2
   fightSpeed: 4
@@ -2012,13 +2012,13 @@ MonoBehaviour:
   remainInBehaviour: 0
   enemy: {fileID: 0}
   Animator: {fileID: 0}
-  target: {x: 0, y: 0, z: 0}
   navMeshAgent: {fileID: 0}
   waypoints: []
   nextWayPoint: 0
   weapon: {fileID: 0}
   lastTimeTargetUpdated: 0
   isDead: 0
+  isDamaged: 0
   _maxHealth: 100
   _blood: {fileID: 198923242158697908}
 --- !u!114 &114688553456641268

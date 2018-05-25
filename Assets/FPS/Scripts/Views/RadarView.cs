@@ -21,7 +21,7 @@ namespace TutorialFPS.Views
         }
         public static void RegisterRadarObject(GameObject o, Image i)
         {
-            if (RadObjects.Count>0&& RadObjects.First(x => x.Owner == o) != null)
+            if (RadObjects.Count>0&& RadObjects.FirstOrDefault(x => x.Owner == o) != null)
             {
                 return;
             }
