@@ -17,7 +17,8 @@ namespace TutorialFPS.Views
 
         private void Start()
         {
-            _playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+            //_playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+            _playerPos = Camera.main.transform;
         }
         public static void RegisterRadarObject(GameObject o, Image i)
         {
@@ -54,6 +55,7 @@ namespace TutorialFPS.Views
                                          radObject.Owner.transform.position) * mapScale;
                 float deltay = Mathf.Atan2(radarPos.x, radarPos.z) * Mathf.Rad2Deg -
                                270 - _playerPos.eulerAngles.y;
+                
                 radarPos.x = distToObject * Mathf.Cos(deltay * Mathf.Deg2Rad) * -1;
                 radarPos.z = distToObject * Mathf.Sin(deltay * Mathf.Deg2Rad);
                 radObject.Icon.transform.SetParent(transform);

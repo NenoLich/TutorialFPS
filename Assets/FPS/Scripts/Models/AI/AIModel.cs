@@ -162,10 +162,10 @@ namespace TutorialFPS.Models.AI
                 Quaternion.LookRotation(new Vector3((source - Position).x, source.y, (source - Position).z));
             _blood.Play();
 
-            Animator.SetTrigger("Hurt");
             _audioSource.Stop();
             _audioSource.Play();
             Health = Mathf.Clamp(Health - damage, 0, _maxHealth);
+            Animator.SetTrigger("Hurt");
 
             isDamaged = true;
             UpdateTarget(Camera.main.transform.position);
@@ -181,6 +181,7 @@ namespace TutorialFPS.Models.AI
         {
             StopAllCoroutines();
             isDead = true;
+            SetAgentActive(false);
             navMeshAgent.enabled = false;
             Animator.SetTrigger("Death");
             Invoke("OnDeath", 4f);

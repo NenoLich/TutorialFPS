@@ -8,7 +8,7 @@ namespace TutorialFPS.Models.AI
     {
         public override void Act(AIModel aiModel)
         {
-            if (!aiModel.CheckIfCountDownElapsed(aiModel.timeBetweenAttack) || aiModel.weapon._reload|| !DetectEnemy(aiModel))
+            if (!aiModel.CheckIfCountDownElapsed(aiModel.timeBetweenAttack) || aiModel.weapon._reload || !DetectEnemy(aiModel))
             {
                 return;
             }
@@ -22,7 +22,8 @@ namespace TutorialFPS.Models.AI
             aiModel.SetAgentActive(false);
 
             while (Quaternion.Angle(aiModel.Rotation,
-                           Quaternion.LookRotation(aiModel.Target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 5f)
+                           Quaternion.LookRotation(aiModel.Target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0)) > 5f
+                   && Mathf.Abs(aiModel.Target.y - aiModel.eyes.position.y) < 2f)
             {
                 aiModel.Rotation = Quaternion.Lerp(aiModel.Rotation,
                     Quaternion.LookRotation(aiModel.Target - aiModel.eyes.position) * Quaternion.Euler(0, 45, 0),
@@ -39,7 +40,7 @@ namespace TutorialFPS.Models.AI
                 aiModel.weapon.Fire();
                 if (aiModel.weapon._reload)
                 {
-                    aiModel.Animator.SetBool("Reload",true);
+                    aiModel.Animator.SetBool("Reload", true);
                 }
                 else
                 {
@@ -69,7 +70,7 @@ namespace TutorialFPS.Models.AI
             //    return true;
             //}
 
-            if (Physics.Linecast(aiModel.eyes.position,Camera.main.transform.position,out hit)
+            if (Physics.Linecast(aiModel.eyes.position, Camera.main.transform.position, out hit)
                 && hit.collider.CompareTag("Player"))
             {
                 aiModel.UpdateTarget(hit.point);
